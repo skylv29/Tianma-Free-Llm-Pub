@@ -59,8 +59,8 @@
     "reasoning": "toggle", "tools": null, "structured": null,
     "usage": ["coding"],
     "score_coding": 3, "score_zh": null,
-    "specialty": "商汤自研轻量多模态 agent。⭐ 走 Flash-Lite 专属池，消费 1 点返 1 点通用积分（30 天有效、不占滚动额度）。⭐ 本渠道唯一图/文都能收的模型，图片支持公网 URL 或 Base64",
-    "pitfall": "薅羊毛策略：轻量活全走它消耗专属池，白赚通用积分去跑 V4 Pro / GLM-5.2 / K3。⚠️ `max_tokens` 范围 1–65,536（默认 65,535）、`n` 1–7",
+    "specialty": "商汤自研轻量多模态 agent。⭐ 走 Flash-Lite 专属池，消费 1 点返 1 点通用积分（30 天有效、不占滚动额度）。⭐ 图片支持公网 URL 或 Base64（同渠道的 `kimi-k3` 只收 Base64）",
+    "pitfall": "薅羊毛策略：轻量活全走它消耗专属池，白赚通用积分去跑通用池那几条（`deepseek-flash` / `glm-5.2` / `kimi-k3`）。⚠️ `max_tokens` 范围 1–65,536（默认 65,535）、`n` 1–7",
     "free_type": "beta", "expiry": null,
     "pool": "Flash-Lite 专属池（消费 1 返 1 通用）",
     "source_level": "官", "verified_at": "2026-09-21"
