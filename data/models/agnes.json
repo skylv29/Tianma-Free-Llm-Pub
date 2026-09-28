@@ -1,0 +1,74 @@
+[
+  {
+    "id": "agnes-3.0-flash", "vendor": "agnes",
+    "ctx_in": 512000, "ctx_out": 65536,
+    "modal_in": ["text", "image"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": null,
+    "usage": ["coding", "writing"],
+    "score_coding": 5, "score_zh": 4,
+    "specialty": "全新一代，官方定位 Agnes Code 任务执行、工具编排与可信交付。官网称 AA 智能指数同类第 1/61（厂商自报，且官方注明是估算成绩）",
+    "pitfall": "⚠️ 官方未公布任何中文 benchmark，也没有国产基座。中文写作别拿它当主力",
+    "free_type": "permanent", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-20"
+  },
+  {
+    "id": "agnes-2.5-flash", "vendor": "agnes",
+    "ctx_in": 512000, "ctx_out": 65536,
+    "modal_in": ["text", "image"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": null,
+    "usage": ["coding", "writing"],
+    "score_coding": 4, "score_zh": 3,
+    "specialty": "上一代但同样 $0，编码 / agent / 工具调用是官方明写的优化方向。官方 WorkBuddy 集成指南默认就用它",
+    "pitfall": "⚠️ 别用 agnes-2.0-flash——官方已标注废弃，中文教程大量引用旧 ID，照抄会 404",
+    "free_type": "permanent", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-20"
+  },
+  {
+    "id": "agnes-image-2.0-flash", "vendor": "agnes",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text", "image"], "modal_out": ["image"],
+    "reasoning": "none", "tools": null, "structured": null,
+    "usage": ["image"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "文生图 / 图生图 / 多图合成，输出 1K~4K 档。官网自报 AA 图改图榜 1178 Elo（厂商口径）",
+    "pitfall": "免费档 1K 实际 20 RPM、2K 10 RPM、3K/4K 只有 1 RPM",
+    "free_type": "promo", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-20"
+  },
+  {
+    "id": "agnes-image-2.1-flash", "vendor": "agnes",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text", "image"], "modal_out": ["image"],
+    "reasoning": "none", "tools": null, "structured": null,
+    "usage": ["image"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "同 2.0，优化高信息密度",
+    "pitfall": "2K 档实际 10 RPM、3K/4K 只有 1 RPM",
+    "free_type": "promo", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-20"
+  },
+  {
+    "id": "agnes-image-2.5-flash", "vendor": "agnes",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text", "image"], "modal_out": ["image"],
+    "reasoning": "none", "tools": null, "structured": null,
+    "usage": ["image"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "官方称全面超 2.1，与 2.0/2.1 同价同计费方法",
+    "pitfall": "3K/4K 档 1 RPM",
+    "free_type": "promo", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-20"
+  },
+  {
+    "id": "agnes-video-2.5-flash", "vendor": "agnes",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text", "image"], "modal_out": ["video"],
+    "reasoning": "none", "tools": null, "structured": null,
+    "usage": ["video"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "720P，单次 4~12 秒，OpenAI Videos 兼容",
+    "pitfall": "⚠️ 限时 $0/秒，与付费的 Video 2.5 同一套计费公式。免费档 1 RPM",
+    "free_type": "promo", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-20"
+  }
+]

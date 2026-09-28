@@ -1,0 +1,92 @@
+[
+  {
+    "id": "glm-5.2", "vendor": "zhipu",
+    "ctx_in": 1000000, "ctx_out": 131072,
+    "modal_in": ["text"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": null, "structured": null,
+    "usage": ["coding", "writing"],
+    "score_coding": 4, "score_zh": 4,
+    "specialty": "智谱上一代旗舰，输出上限 128K 是本渠道最高，长代码生成不易截断；中文语体与长文组织最好",
+    "pitfall": "⚠️ 是上一代——智谱当前旗舰已是 GLM-5.3。别拿它跟人家旗舰比。⚠️ 官方原文：「模型默认启用思考模式。若需关闭，请将 `reasoning_effort` 设置为 `none`。`thinking.type` 不支持 `disabled`，传入该值将导致请求失败」—— 想关思考别照搬别家的 `thinking` 写法。评分 09-24 与魔搭同名条目就低统一为 4/4（本条曾评中文 5）",
+    "free_type": "beta", "expiry": null,
+    "pool": "通用池",
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "kimi-k3", "vendor": "moonshot",
+    "ctx_in": 1048576, "ctx_out": 65536,
+    "modal_in": ["text", "image"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": null, "structured": null,
+    "usage": ["coding", "writing"],
+    "score_coding": 5, "score_zh": 4,
+    "specialty": "1M 上下文 + 支持图片输入，长文本专长。官方定价 ¥20/¥100 每百万输入/输出，能在 SenseNova 白嫖到相当划算",
+    "pitfall": "⚠️ 输出上限两个来源对不上：实时接口 65,536；官方文档现行不写 131,072，写作「`max_completion_tokens` 默认 128K，最大输出长度是 1024*1024 - prompt_tokens」—— 那是随 prompt 长度变动的动态值，不是可依赖的固定上限。按保守的 65,536 填客户端。⚠️ 图片只收 Base64：官方原文「不支持直接传入公网图片 URL。请将图片转换为 Base64 编码后传入；同时，`content` 必须是对象数组，不能直接使用字符串」—— 丢图链进去必失败。⚠️ 采样参数是固定值：`temperature` 固定 1、`top_p` 固定 0.95、两个 penalty 固定 0（官方建议不传）。评分 09-24 复核对齐为 5/4：本条 09-21 的 3/4 是早期保守值，NVIDIA 侧 09-23 逐规格取证判断更高，旗舰定位取有取证的那份",
+    "free_type": "beta", "expiry": null,
+    "pool": "通用池",
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "deepseek-v4-flash", "vendor": "deepseek",
+    "ctx_in": 1000000, "ctx_out": 65536,
+    "modal_in": ["text"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": null,
+    "usage": ["coding", "writing"],
+    "score_coding": 4, "score_zh": 3,
+    "specialty": "1M 上下文通用推理，官方明示支持思考与工具调用",
+    "pitfall": "⚠️ DeepSeek 官方已退役 deepseek-v4-flash（改由 V4.1-Flash 承担）。SenseNova 上是商汤自己托管的权重，不受影响，但版本号要认清。⚠️ 官方：思考模式下 `top_p` 最小 0.95；非思考模式下 `top_p` 固定为 1.0，传入其他值将被忽略",
+    "free_type": "beta", "expiry": null,
+    "pool": "通用池",
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "deepseek-flash", "vendor": "deepseek",
+    "display": "DeepSeek V4.1 Flash",
+    "ctx_in": 1000000, "ctx_out": 393216,
+    "modal_in": ["text", "image", "video"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": true,
+    "usage": ["coding", "writing"],
+    "score_coding": 4, "score_zh": 3,
+    "specialty": "DeepSeek V4.1 Flash。官方章节逐字：深度求索推出的新一代高效通用模型，兼顾推理效率与成本的同时强化推理、Agent 与多模态理解能力；架构为「552B 参数 MoE 与非对称 Causal-Encoder-Decoder，通过较低激活参数控制计算开销」。1M 上下文，思考/工具/结构化输出全支持",
+    "pitfall": "⚠️ `max_tokens` 默认 131,072、范围 [1, 393,216]，且官方明写「思维链超出 max_tokens 会截断思考」「思考内容和输出共享 max_tokens 配额」（参数推荐：普通任务 2048~4096、思考模式 ≥4096）—— 393,216 是参数上限不是单次长回复的保证。⚠️ 视频输入仅 Chat Completions 接口支持：官方逐字「Anthropic Messages API 与 Responses API 不支持视频；请勿在对应请求中传入视频文件或视频 URL」；图片收 JPEG/PNG/GIF/WebP，单图 ≤50MB、总请求体 ≤64MB。⚠️ `reasoning_effort` 默认 high，原生支持 none/low/high/max；Chat 接口设 none 可关思考，Messages 接口把 `output_config.effort` 设为 none 也关不掉（官方原文）。⚠️ 带 tools 请求时须回传所有历史轮次的 `reasoning_content`，否则工具链路不完整（官方参数推荐表原文）。⚠️ 它是 deepseek-v4-flash 的接班型号（上游 DeepSeek 换代），但 SenseNova 两档在文档并行、各有完整章节，别把 ID 混用。评分沿用前代 `deepseek-v4-flash`（4/3），本代实测后再更新",
+    "free_type": "beta", "expiry": null,
+    "pool": "通用池",
+    "source_level": "官", "verified_at": "2026-09-23"
+  },
+  {
+    "id": "sensenova-6.8-flash-lite", "vendor": "sensetime",
+    "ctx_in": 262144, "ctx_out": 65536,
+    "modal_in": ["text", "image"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": null, "structured": null,
+    "usage": ["coding"],
+    "score_coding": 3, "score_zh": null,
+    "specialty": "商汤自研轻量多模态 agent。⭐ 走 Flash-Lite 专属池，消费 1 点返 1 点通用积分（30 天有效、不占滚动额度）。⭐ 本渠道唯一图/文都能收的模型，图片支持公网 URL 或 Base64",
+    "pitfall": "薅羊毛策略：轻量活全走它消耗专属池，白赚通用积分去跑 V4 Pro / GLM-5.2 / K3。⚠️ `max_tokens` 范围 1–65,536（默认 65,535）、`n` 1–7",
+    "free_type": "beta", "expiry": null,
+    "pool": "Flash-Lite 专属池（消费 1 返 1 通用）",
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "sensenova-u1.5-lite", "vendor": "sensetime",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text"], "modal_out": ["image"],
+    "reasoning": "none", "tools": null, "structured": null,
+    "usage": ["image"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "文生图 / 图编辑。默认带水印，去水印限时免费",
+    "pitfall": "非 LLM，不参与文本类筛选，没有 token 上下文概念。⚠️ 官方：「无水印生成（`watermark=false`）当前免费公测，后续将转为付费功能」，并另写「建议调用时显式传入 `watermark` 参数」—— 别把去水印当长期能力规划。⚠️ 注意这条转付费不在「额度和活动规则调整会提前通知」那句的管辖范围内，官方没承诺会打招呼",
+    "free_type": "beta", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "sensenova-u1.5-fast", "vendor": "sensetime",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text"], "modal_out": ["image"],
+    "reasoning": "none", "tools": null, "structured": null,
+    "usage": ["image"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "图文生成，信息图方向",
+    "pitfall": "非 LLM，不参与文本类筛选，没有 token 上下文概念",
+    "free_type": "beta", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-21"
+  }
+]

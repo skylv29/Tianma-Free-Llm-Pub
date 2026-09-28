@@ -1,0 +1,86 @@
+[
+  {
+    "id": "meituan/longcat-2.0:free", "vendor": "meituan",
+    "ctx_in": 1048756, "ctx_out": 262144,
+    "modal_in": ["text"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": null,
+    "usage": ["coding", "writing"],
+    "score_coding": 5, "score_zh": 4,
+    "specialty": "美团 LongCat，48B 激活 / 1.6T 总参。1M 上下文 / 262K 输出，官方定位 coding、repository-scale edits、long-horizon problem solving、agentic tool use。7 个里规格最高",
+    "pitfall": "reasoning 默认开启。中文属流畅够用而非最优。\\n\\n2026-09-26 按官方接口现值回填：`context_length` = 1048756（不是整数 1048576，官方就是这么写的，照抄别「四舍五入」）、`top_provider.max_completion_tokens` = 262144（此前记的 131072 是旧值）。免费与否判据同步：`pricing` prompt/completion 均为 \"0\" 且带 `synthesizedFreeVariant` 标记。",
+    "free_type": "variant", "expiry": null,
+    "source_level": "实", "verified_at": "2026-09-14"
+  },
+  {
+    "id": "poolside/laguna-s-2.1:free", "vendor": "poolside",
+    "ctx_in": 262144, "ctx_out": 131072,
+    "modal_in": ["text"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": null,
+    "usage": ["coding"],
+    "score_coding": 4, "score_zh": null,
+    "specialty": "编码 agent 专用，官方 Terminal-Bench 2.1 = 70.2%。⭐ 在 Nous 输出上限给到 131,072（OpenRouter 同款只有 32,768），这是选 Nous 的实际理由",
+    "pitfall": "reasoning 默认开启",
+    "free_type": "variant", "expiry": null,
+    "source_level": "实", "verified_at": "2026-09-14"
+  },
+  {
+    "id": "stepfun/step-3.7-flash:free", "vendor": "stepfun",
+    "ctx_in": 262144, "ctx_out": 32768,
+    "modal_in": ["text", "image", "video"], "modal_out": ["text"],
+    "reasoning": "effort", "tools": true, "structured": true,
+    "usage": ["coding", "writing"],
+    "score_coding": 3, "score_zh": 4,
+    "specialty": "阶跃星辰 196B 骨干 ≈11B 激活 + 视觉编码器。多模态（图 + 视频）且推理强度可调档",
+    "pitfall": "⚠️ 思考强制开启（三档 high/medium/low，默认 medium），输出只有 32K。中文评分 09-24 与魔搭同名条目就低统一为 4（本条曾评 5）",
+    "free_type": "variant", "expiry": null,
+    "source_level": "实", "verified_at": "2026-09-14"
+  },
+  {
+    "id": "upstage/solar-pro4:free", "vendor": "upstage",
+    "ctx_in": 524288, "ctx_out": 131072,
+    "modal_in": ["text"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": true,
+    "usage": ["coding", "writing"],
+    "score_coding": 3, "score_zh": null,
+    "specialty": "韩国 Upstage，524K 上下文，主打长程任务 + 办公生产力 + 文档密集型工作流，支持并行工具调用",
+    "pitfall": "中英之外的语种不错，中文非其强项",
+    "free_type": "variant", "expiry": null,
+    "source_level": "实", "verified_at": "2026-09-14"
+  },
+  {
+    "id": "poolside/laguna-xs-2.1:free", "vendor": "poolside",
+    "ctx_in": 262144, "ctx_out": 32768,
+    "modal_in": ["text"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": null,
+    "usage": ["coding"],
+    "score_coding": 3, "score_zh": null,
+    "specialty": "33B-A3B 轻量编码 agent",
+    "pitfall": "reasoning 默认开启，输出 32K",
+    "free_type": "variant", "expiry": null,
+    "source_level": "实", "verified_at": "2026-09-14"
+  },
+  {
+    "id": "inclusionai/ling-3.0-flash-fin:free", "vendor": "inclusionai",
+    "ctx_in": 262144, "ctx_out": 235929,
+    "modal_in": ["text"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": true,
+    "usage": ["writing"],
+    "score_coding": null, "score_zh": 1,
+    "specialty": "⚠️ 金融垂直（蚂蚁 InclusionAI）。写财经/投研类内容反而最合适，且 Nous 给了 235,929 的超高输出上限",
+    "pitfall": "通用写作与编码请跳过。reasoning 默认开启",
+    "free_type": "variant", "expiry": null,
+    "source_level": "实", "verified_at": "2026-09-14"
+  },
+  {
+    "id": "inclusionai/ling-3.0-flash-sante:free", "vendor": "inclusionai",
+    "ctx_in": 262144, "ctx_out": 32768,
+    "modal_in": ["text"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": null,
+    "usage": ["other"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "⚠️ 医疗垂直（蚂蚁 InclusionAI）",
+    "pitfall": "通用场景不要用",
+    "free_type": "variant", "expiry": null,
+    "source_level": "实", "verified_at": "2026-09-14"
+  }
+]

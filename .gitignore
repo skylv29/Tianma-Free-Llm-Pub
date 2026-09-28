@@ -1,0 +1,25 @@
+# 本地密钥 —— 绝不入库
+data/.keys.local.json
+*.local.json
+.keys.local.json
+
+# 机器产物统一放 data/out/，都不入库
+data/out/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 临时验证脚本与产物
+_*.py
+_*.txt
+_*.html
+_*.js
+_*.json
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

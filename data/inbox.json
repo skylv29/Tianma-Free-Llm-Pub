@@ -1,0 +1,28 @@
+{
+  "_comment": "新渠道草稿池。看到某个平台可能有免费 API 但还没核实，先在这里记一条（只存「在哪看到的」），核实通过后才升级进 channels.json + models/<id>.json。渠道因免费政策结束被移出正式清单时，也要在这里留一条 status=todo —— 免费活动是阶段性的，巡检每轮都会点名草稿池，官方一恢复就能发现。build.py 会在终端提示待核实条数，条目会出现在页面「巡检更新」的草稿池行和复核提示词里；status=done 的不再出现。",
+  "_usage": [
+    "status: todo = 待核实 / doing = 核实中 / done = 已升级或已否决",
+    "source_level 只在核实后填，取值：实 / 官 / 算 / 判",
+    "拿不准的一律不升级，改记进 unverified.json 留白"
+  ],
+  "items": [
+    { "id": "bai", "name": "B.AI", "url": "https://docs.b.ai/llmservice/promotions-and-pricing-notices/",
+      "seen_at": "2026-09-17", "hint": "回访促销页：$0 免费模型有没有恢复（现仍是折扣档）；清单端点匿名要 Key，只有联网核文档这一条路",
+      "status": "todo" },
+    { "id": "qoder", "name": "Qoder", "url": "https://qoder.com/pricing",
+      "seen_at": "2026-09-20",
+      "status": "done" },
+    { "id": "stepfun", "name": "阶跃星辰 StepFun", "url": "https://platform.stepfun.com/step-plan ; https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "seen_at": "2026-09-20",
+      "status": "done" },
+    { "id": "workbuddy", "name": "WorkBuddy（腾讯云）", "url": "https://www.workbuddy.cn/docs/workbuddy/Pricing ; https://www.workbuddy.ai/docs/workbuddy/pricing",
+      "seen_at": "2026-09-25", "hint": "回访国内版定价页与模型配置页：「限免」有没有从功能配额（补全次数 / 任务数 / Auto 可选范围）变成某个模型免积分消耗；体验版 500 基础积分的口径有没有改；有没有开放可导出的 Key 或 OpenAI 兼容端点（现在仍是纯客户端、BYOK 只入向）",
+      "status": "todo" },
+    { "id": "trae-work", "name": "Trae Work（字节）", "url": "https://docs.trae.cn/work_what-is-trae-work",
+      "seen_at": "2026-09-25", "hint": "回访 TraeWork 的 work_models 与 Trae 计费页：有没有公布 TraeWork 专属的赠送积分或免费模型档（现在整页只有会员限制标注，无任何免费口径）",
+      "status": "todo" },
+    { "id": "zcode", "name": "ZCode（智谱）", "url": "https://zcode.z.ai/cn/docs/qa ; https://zcode.z.ai/cn/docs/configuration",
+      "seen_at": "2026-09-25", "hint": "回访 coding-plan/notice/event-glm-5.3-flash：10 月 7 日夜间畅用结束后官方有没有续期或换时段；顺便看有没有「不订阅套餐也能用模型」的新口径",
+      "status": "todo" }
+  ]
+}

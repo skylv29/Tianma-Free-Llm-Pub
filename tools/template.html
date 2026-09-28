@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>免费大模型渠道导航</title>
+<style>
+:root{
+  --bg:#ffffff; --bg2:#f7f7f5; --bg3:#efefec;
+  --fg:#1e1e1c; --fg2:#5f5e5a; --fg3:#8a8983;
+  --bd:#e2e1dc; --bd2:#cfcec8;
+  --accent:#185FA5; --accent-bg:#e6f1fb;
+  --ok:#0F6E56; --ok-bg:#E1F5EE;
+  --warn:#854F0B; --warn-bg:#FAEEDA;
+  --bad:#A32D2D; --bad-bg:#FCEBEB;
+  --pur:#534AB7; --pur-bg:#EEEDFE;
+  --radius:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#1c1c1a; --bg2:#242422; --bg3:#2e2e2b;
+    --fg:#f0efe9; --fg2:#b4b2a9; --fg3:#888780;
+    --bd:#3a3a36; --bd2:#4d4d48;
+    --accent:#85B7EB; --accent-bg:#0C447C;
+    --ok:#5DCAA5; --ok-bg:#085041;
+    --warn:#EF9F27; --warn-bg:#633806;
+    --bad:#F09595; --bad-bg:#791F1F;
+    --pur:#AFA9EC; --pur-bg:#3C3489;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font:14px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1500px;margin:0 auto;padding:0 20px 120px}
+
+header{padding:26px 0 14px;border-bottom:1px solid var(--bd);margin-bottom:18px}
+h1{margin:0 0 6px;font-size:22px;font-weight:600}
+.sub{color:var(--fg2);font-size:13px;margin-bottom:12px}
+.statbar{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--fg2)}
+.statbar b{color:var(--fg);font-weight:600}
+.disclaim{margin-top:10px;font-size:12px;color:var(--fg3);border-left:3px solid var(--bd2);padding-left:10px}
+
+.stalebox{background:var(--warn-bg);border:1px solid var(--warn);border-radius:var(--radius);
+  padding:12px 16px;margin:16px 0 20px;font-size:13px}
+.stalebox h3{margin:0 0 8px;font-size:14px;font-weight:600;color:var(--warn)}
+.stalebox ul{margin:0;padding-left:20px}
+.stalebox li{margin-bottom:4px}
+.stalebox code{background:var(--bg2);padding:1px 5px;border-radius:3px}
+.livebox{background:var(--bad-bg);border:1px solid var(--bad);border-radius:var(--radius);
+  padding:12px 16px;margin:16px 0 20px;font-size:13px}
+.livebox h3{margin:0 0 8px;font-size:14px;font-weight:600;color:var(--bad)}
+.livebox .row{margin-bottom:5px}
+.livebox .row b{font-weight:600}
+.livebox .id{font-family:ui-monospace,Consolas,Menlo,monospace;font-size:12px;
+  background:var(--bg2);padding:1px 5px;border-radius:3px}
+.livebox .go{color:var(--accent);cursor:pointer;text-decoration:underline}
+#promptbox{width:100%;height:360px;box-sizing:border-box;
+  font-family:ui-monospace,Consolas,Menlo,monospace;font-size:12px;line-height:1.75;
+  padding:12px 14px;border:1px solid var(--bd);border-radius:var(--radius);
+  background:var(--bg2);color:var(--fg);resize:vertical}
+
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--bd);margin-bottom:18px}
+.tab{padding:9px 16px;cursor:pointer;border:none;background:none;color:var(--fg2);
+  font-size:13px;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit}
+.tab:hover{color:var(--fg)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+section{display:none}
+section.on{display:block}
+
+.filters{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--radius);
+  padding:14px 16px;margin-bottom:16px}
+.frow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.frow:last-child{margin-bottom:0}
+.flabel{font-size:12px;color:var(--fg3);min-width:66px;font-weight:500}
+.chip{padding:4px 11px;border:1px solid var(--bd2);border-radius:20px;background:var(--bg);
+  cursor:pointer;font-size:12px;color:var(--fg2);user-select:none;font-family:inherit}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+/* 仅客户端（app 内选模型）的渠道角标 */
+.chip .apponly{font-style:normal;font-size:10px;margin-left:6px;padding:1px 5px;border-radius:6px;
+  background:var(--warn-bg);color:var(--warn);white-space:nowrap}
+.chip.on .apponly{background:rgba(255,255,255,.24);color:#fff}
+select,input[type=text]{padding:5px 9px;border:1px solid var(--bd2);border-radius:6px;
+  background:var(--bg);color:var(--fg);font-size:13px;font-family:inherit}
+input[type=text]{min-width:240px}
+.resetc{padding:5px 12px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);
+  color:var(--fg2);cursor:pointer;font-size:12px;font-family:inherit}
+.resetc:hover{border-color:var(--bad);color:var(--bad)}
+
+.count{font-size:13px;color:var(--fg2);margin-bottom:10px}
+.count b{color:var(--fg)}
+.tblwrap{overflow-x:auto;border:1px solid var(--bd);border-radius:var(--radius)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{background:var(--bg3);text-align:left;padding:9px 10px;font-weight:600;font-size:12px;
+  color:var(--fg2);white-space:nowrap;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:2}
+th.sortable{cursor:pointer}
+th.sortable:hover{color:var(--accent)}
+th .arrow{color:var(--accent);font-size:10px}
+td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+tr.row{cursor:pointer}
+tr.row:hover{background:var(--bg2)}
+tr.row.sel{background:var(--accent-bg)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;
+  word-break:break-all;max-width:330px}
+.mname{font-family:var(--font-sans,system-ui,sans-serif);font-size:12px;color:var(--fg2);
+  font-weight:600;margin-bottom:1px}
+.ch{font-size:11px;padding:2px 7px;border-radius:5px;background:var(--bg3);color:var(--fg2);white-space:nowrap}
+.ch.api{background:var(--ok-bg);color:var(--ok)}
+.ch.client{background:var(--warn-bg);color:var(--warn)}
+.sc{display:inline-block;width:26px;height:20px;line-height:20px;text-align:center;border-radius:4px;
+  font-size:12px;font-weight:600}
+.sc5{background:var(--ok);color:#fff}.sc4{background:var(--ok-bg);color:var(--ok)}
+.sc3{background:var(--warn-bg);color:var(--warn)}.sc2{background:var(--bg3);color:var(--fg2)}
+.sc1{background:var(--bg3);color:var(--fg3)}
+.sc sup{font-size:9px;font-weight:400;margin-left:1px}
+.src{font-size:10px;padding:1px 5px;border-radius:4px;font-weight:600;margin-left:4px}
+.spec{color:var(--fg2);font-size:12px;max-width:420px}
+.pf{color:var(--warn);font-size:12px}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.exp{color:var(--fg3);text-align:center;width:26px}
+
+tr.detail td{background:var(--bg2);padding:14px 16px}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.dgrid{grid-template-columns:1fr}}
+.dbox{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:12px 14px}
+.dbox h4{margin:0 0 8px;font-size:12px;color:var(--fg3);font-weight:600}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:3px 0;border-bottom:1px dashed var(--bd)}
+.kv span:first-child{color:var(--fg3)}
+.kv span:last-child{text-align:right;word-break:break-all}
+pre.cfg{margin:0;background:var(--bg3);border-radius:6px;padding:10px 12px;font-size:12px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-all}
+.btn{padding:5px 12px;border:1px solid var(--accent);border-radius:6px;background:var(--accent);
+  color:#fff;cursor:pointer;font-size:12px;font-family:inherit;margin-top:8px}
+.btn:hover{opacity:.86}
+.btn.ghost{background:transparent;color:var(--accent)}
+.cpb{margin-left:6px;padding:0 5px;border:1px solid var(--bd2);border-radius:4px;background:transparent;
+color:var(--fg3);font-size:11px;line-height:16px;cursor:pointer;vertical-align:middle}
+.cpb:hover{border-color:var(--accent);color:var(--accent);opacity:1}
+.cpb.ok{border-color:var(--ok);color:var(--ok)}
+.cpb.bad{border-color:var(--bad);color:var(--bad)}
+.expd{margin-left:6px;padding:0 6px;border:1px solid var(--bad);border-radius:4px;background:var(--bad-bg);
+  color:var(--bad);font-size:11px;font-weight:600;white-space:nowrap}
+.warnline{margin-top:10px;padding:8px 10px;background:var(--warn-bg);border-radius:6px;
+  font-size:12px;color:var(--warn)}
+.expwarn{margin-top:12px;padding:10px 13px;background:var(--bad-bg);border:1px solid var(--bad);
+  border-radius:var(--radius);font-size:13px;color:var(--bad);line-height:1.7}
+.expwarn b{font-weight:600}
+.expwarn.ok{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--radius);padding:14px 16px}
+.card h3{margin:0 0 4px;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card .rank{background:var(--accent);color:#fff;font-size:11px;padding:1px 7px;border-radius:10px;font-weight:600}
+.card .txt{font-size:12.5px;color:var(--fg2);margin:8px 0 0}
+.card .txt b{color:var(--fg)}
+.card ul{margin:8px 0 0;padding-left:18px;font-size:12.5px;color:var(--fg2)}
+.card li{margin-bottom:3px}
+.notes{white-space:pre-wrap;font-size:12.5px;color:var(--fg2);margin-top:10px;
+  border-top:1px solid var(--bd);padding-top:10px;line-height:1.7}
+
+.tl{border-left:2px solid var(--bd2);margin-left:8px;padding-left:18px}
+.tli{position:relative;margin-bottom:16px}
+.tli::before{content:"";position:absolute;left:-25px;top:6px;width:9px;height:9px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--bg)}
+.tld{font-size:12px;color:var(--accent);font-weight:600;margin-bottom:2px}
+/* pre-wrap：数据里的 \n 段落分隔要真断行。以前 .tlc 是默认的 normal，
+   政策变化那条时间轴会把「⚠️ 另起一段」的内容直接接在上一句后面 */
+.tlc{font-size:13px;white-space:pre-wrap}
+.tagd{display:inline-block;font-size:11px;padding:1px 7px;border-radius:5px;margin-left:6px;
+  background:var(--bg3);color:var(--fg2)}
+.tagd.下线{background:var(--bad-bg);color:var(--bad)}
+.tagd.新增{background:var(--ok-bg);color:var(--ok)}
+.tagd.规则{background:var(--warn-bg);color:var(--warn)}
+.tagd.实测{background:var(--accent-bg);color:var(--accent)}
+
+.vendor{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--radius);
+  padding:14px 16px;margin-bottom:12px}
+.vendor h3{margin:0 0 4px;font-size:15px}
+.vendor .org{font-size:12px;color:var(--fg3);margin-bottom:8px}
+.vendor p{margin:6px 0;font-size:13px;color:var(--fg2);line-height:1.7}
+.vendor .verdict{margin-top:8px;padding:8px 11px;background:var(--pur-bg);border-radius:6px;
+  font-size:12.5px;color:var(--pur)}
+
+.uv{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.uv .n{color:var(--fg3);font-variant-numeric:tabular-nums;min-width:26px}
+
+.taskpick{display:flex;gap:8px;flex-wrap:wrap}
+.taskpick .chip{font-size:13px;padding:6px 14px}
+.why{background:var(--pur-bg);border-radius:6px;padding:9px 12px;font-size:12.5px;
+  color:var(--pur);margin-bottom:14px;line-height:1.7}
+.noteform{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.noteform input[type=text]{min-width:0;flex:1}
+.noteform textarea{min-width:0;flex:1 1 320px}
+.note{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--radius);
+  padding:12px 14px;margin-bottom:10px}
+.note input.title{width:100%;min-width:0;padding:2px 5px;margin:0 0 6px;font-size:14px;font-weight:600;
+  background:transparent;border-color:transparent}
+.note input.title:hover{border-color:var(--bd2)}
+.note input.title:focus{border-color:var(--accent);background:var(--bg)}
+.note textarea{width:100%;min-width:0;padding:8px 10px;box-sizing:border-box;border:1px solid var(--bd);
+  border-radius:6px;background:var(--bg);color:var(--fg);font-size:13px;font-family:inherit;
+  line-height:1.7;resize:vertical;min-height:58px}
+.note textarea:focus{border-color:var(--accent);outline:none}
+.notefoot{display:flex;align-items:center;gap:10px;margin-top:7px;font-size:11.5px;color:var(--fg3);flex-wrap:wrap}
+.notefoot .act{margin-left:auto;display:flex;gap:6px}
+.notefoot .btn{margin-top:0;padding:3px 9px}
+.notefoot .btn.del{background:transparent;border-color:var(--bd2);color:var(--fg3)}
+.notefoot .btn.del:hover{border-color:var(--bad);color:var(--bad);opacity:1}
+.notebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.notebar .meta{color:var(--fg3);font-size:12px}
+.chainitem{background:var(--bg2);border:1px solid var(--bd);border-left:4px solid var(--accent);
+  border-radius:var(--radius);padding:12px 15px;margin-bottom:10px}
+.chainitem.next{border-left-color:var(--warn)}
+.chainitem.last{border-left-color:var(--fg3)}
+.chainhd{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:5px}
+.chainno{background:var(--accent);color:#fff;width:22px;height:22px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
+.chainitem.next .chainno{background:var(--warn)}
+.chainitem.last .chainno{background:var(--fg3)}
+.chainid{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+/* ⚡ 多平台明细：常显小字（不靠 hover）；每个别名是一个可点复制的芯片 */
+.xchan-list{display:block;font-size:11px;color:var(--fg3);line-height:1.9;max-width:560px}
+.xchip{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;background:var(--bg2);border:1px solid var(--bd);border-radius:4px;
+  padding:1px 6px;margin:2px 5px 2px 0;color:var(--fg2);cursor:pointer;user-select:none}
+.xchip:hover{background:var(--ok-bg);color:var(--ok);border-color:var(--ok)}
+.xchip b{font-weight:400;opacity:.7}
+/* 同渠道备选：不占降级档位，单独一行，可复制 */
+.altrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  padding:7px 0;border-bottom:1px dashed var(--bd);font-size:12px}
+.altrow .altmeta{color:var(--fg2)}
+.altrow .xchan-list{width:100%;margin-top:2px}
+.chainmeta{font-size:12px;color:var(--fg2);margin-top:5px;line-height:1.7}
+.chainmeta .k{color:var(--fg3)}
+.chainwarn{margin-top:6px;font-size:12px;color:var(--warn)}
+.chainmiss{margin-top:6px;font-size:12px;color:var(--fg3)}
+.hint{font-size:12px;color:var(--fg3);margin:10px 0 0;line-height:1.7}
+
+.xc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--radius);
+  padding:12px 15px;margin-bottom:12px}
+.xc h4{margin:0 0 8px;font-size:13px;font-weight:600}
+.xrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:900px){.xrow{grid-template-columns:1fr}}
+.xcell{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:9px 11px;font-size:12.5px}
+.xcell .h{font-size:11px;color:var(--fg3);margin-bottom:3px}
+.xcell .v{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;
+  word-break:break-all;color:var(--fg)}
+.xdelta{color:var(--ok);font-weight:600}
+.xdelta.lo{color:var(--bad)}
+
+#cbar{position:fixed;left:0;right:0;bottom:0;background:var(--bg3);border-top:1px solid var(--bd2);
+  padding:10px 20px;display:none;align-items:center;gap:12px;z-index:50;flex-wrap:wrap}
+#cbar.on{display:flex}
+#cbar .items{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+#cbar .ci{background:var(--bg);border:1px solid var(--bd2);border-radius:6px;padding:3px 9px;font-size:12px;
+  display:flex;align-items:center;gap:6px}
+#cbar .ci b{font-weight:500;font-family:ui-monospace,monospace;font-size:11px}
+#cbar .ci span{cursor:pointer;color:var(--fg3)}
+#cbar .ci span:hover{color:var(--bad)}
+
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:100;
+  align-items:center;justify-content:center;padding:24px}
+#modal.on{display:flex}
+.mbox{background:var(--bg);border-radius:12px;max-width:1200px;width:100%;max-height:88vh;overflow:auto;padding:20px 24px}
+.mbox h2{margin:0 0 14px;font-size:17px}
+.mclose{float:right;cursor:pointer;color:var(--fg3);font-size:20px;line-height:1}
+
+footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--bd);
+  font-size:12px;color:var(--fg3);overflow-wrap:anywhere}
+footer code{white-space:normal;word-break:break-word}
+
+@media print{
+  .tabs,.filters,#cbar,#modal,footer,.btn,.resetc{display:none!important}
+  section{display:block!important;page-break-before:always}
+  body{font-size:11px}
+  tr.detail{display:table-row!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1 id="title">免费大模型渠道导航</h1>
+  <div class="sub" id="subtitle"></div>
+  <div class="statbar" id="statbar"></div>
+  <div class="disclaim" id="disclaim"></div>
+</header>
+
+<div class="livebox" id="livebox" style="display:none"></div>
+<div class="stalebox" id="stalebox" style="display:none"></div>
+<div class="expwarn" id="expwarn" style="display:none"></div>
+
+<div class="tabs">
+  <button class="tab on" data-v="find">找模型</button>
+  <button class="tab" data-v="cross">跨渠道对照</button>
+  <button class="tab" data-v="channels">渠道对比</button>
+  <button class="tab" data-v="probe">当前可用性</button>
+  <button class="tab" data-v="export">接入配置</button>
+  <button class="tab" data-v="changes">政策变化</button>
+  <button class="tab" data-v="promos">优惠情报</button>
+  <button class="tab" data-v="vendors">厂商档案</button>
+  <button class="tab" data-v="unverified">未证实清单</button>
+  <button class="tab" data-v="update">巡检更新</button>
+  <button class="tab" data-v="notes">常用备忘</button>
+</div>
+
+<section id="v-find" class="on">
+  <div class="filters" id="filters"></div>
+  <div class="count" id="count"></div>
+  <div class="tblwrap"><table id="mtbl">
+    <thead><tr>
+      <th class="exp"></th>
+      <th class="sortable" data-k="capability">综合</th>
+      <th class="sortable" data-k="id">模型 ID</th>
+      <th class="sortable" data-k="channel">渠道</th>
+      <th class="sortable" data-k="ctx_in">输入上限</th>
+      <th class="sortable" data-k="ctx_out">输出上限</th>
+      <th>模态</th>
+      <th>思考</th>
+      <th class="sortable" data-k="score_coding">编程</th>
+      <th class="sortable" data-k="score_zh">中文</th>
+      <th>专长 / 注意</th>
+      <th>源</th>
+    </tr></thead>
+    <tbody id="mbody"></tbody>
+  </table></div>
+</section>
+
+<section id="v-cross">
+  <p class="hint">同一个模型在 A 家和 B 家常住不同网关，规格可能差好几倍 —— <b>换渠道不换模型</b>是最省事的逃生路线。
+  下面只列出「至少在两个渠道出现」的条目，规格差异最大的排前面。</p>
+  <div id="xclist"></div>
+</section>
+
+<section id="v-channels"><div class="cards" id="chancards"></div>
+
+  <div class="filters" style="margin-top:22px">
+    <div class="frow"><span class="flabel">成本估算</span>
+      <input type="text" id="est-in" placeholder="输入多少字（如 80000）" style="min-width:160px">
+      <input type="text" id="est-out" placeholder="要输出多少字（如 3000）" style="min-width:160px">
+      <span class="flabel" style="min-width:auto">按 1 汉字 ≈ 1.5 token 折算</span>
+      <span class="chip" data-est="tender">招标文件 100 页</span>
+      <span class="chip" data-est="bid">标书 5000 字</span>
+    </div>
+    <div class="frow"><span class="flabel">每轮调用</span>
+      <span class="chip" data-rpt="3">3 次</span>
+      <span class="chip on" data-rpt="5">5 次</span>
+      <span class="chip" data-rpt="8">8 次</span>
+      <span class="flabel" style="min-width:auto">AI 编码工具一个问题通常触发 3~5 次调用（工具回填、上下文压缩另算）</span>
+    </div>
+  </div>
+  <div id="estbox"></div>
+</section>
+
+<section id="v-probe">
+  <p class="hint">探针要你在本地跑 <code>python tools/probe.py</code>（Key 只存本地，不进这个页面）。跑过之后这里会显示各渠道的实时状态。</p>
+  <div id="probelist"></div>
+</section>
+
+<section id="v-export">
+  <p class="hint">按 <b>New API</b> 的渠道格式导出。复制后到 New API 控制台「渠道 → 添加渠道」里填，
+  或直接走 <code>POST /api/channel/</code>。<b>priority 会按下面选的依据排好</b>，
+  New API 会自己失败重试下一个渠道。</p>
+  <div class="filters">
+    <div class="frow"><span class="flabel">优先级按</span>
+      <select id="exp-order"></select>
+      <span class="flabel">渠道</span>
+      <select id="exp-chan"></select>
+    </div>
+  </div>
+  <div id="exportbox"></div>
+</section>
+<section id="v-changes"><div class="tl" id="tllist"></div></section>
+<section id="v-promos">
+  <p class="hint"><b>这一页只记情报，不算收录</b>：官方确实给了折扣、限时免费、赠送额度，但按本项目的口径
+  <b>进不了「免费模型导航」的正式清单</b> —— 通常因为它挂在付费订阅里面（要先买套餐才谈得上免费），
+  或者只是渠道内的第二、第三条路线。它们不影响「哪家能白嫖 API」这个数，所以单独放这里，
+  各家新出现的优惠按日期堆在一起。<br>
+  ⚠️ 反过来也别把这里的内容当成免费渠道：<b>已收录的免费口径不重复记在这页</b>，看到某家在这里出现，
+  意味着它<b>没有</b>进正式清单。出处链接是官方原文页，政策随时会改，用之前自己点进去看一眼。</p>
+  <div class="tl" id="promolist"></div>
+</section>
+<section id="v-vendors"><div id="vlist"></div></section>
+<section id="v-unverified"><div id="uvlist"></div></section>
+
+<section id="v-update">
+  <div class="why"><b>为什么是复制粘贴，不是页面上的按钮</b>：这个页面是双击打开的纯静态文件，
+    浏览器沙箱里没法执行本地程序，做不了真的「运行」按钮。<br>
+    <b>能自动的部分已经自动了</b>：<code>tools/check_live.py</code> 会去拉各家的官方模型清单，
+    跟本项目记录做机器对比，把「消失了什么 / 新增了什么免费货 / 规格变了什么」直接算出来——
+    这一步不需要 AI。真正需要 AI 的是<b>脚本查不了的那几家</b>（要带 Key 或没有公开端点），
+    以及<b>判断这些变化意味着什么、要不要改数据</b>。</div>
+
+  <div id="livetable"></div>
+
+  <div class="filters">
+    <div class="frow"><span class="flabel">要干什么</span>
+      <div class="taskpick" id="pkind"></div></div>
+  </div>
+  <div id="pnote" class="why"></div>
+  <textarea id="promptbox" readonly spellcheck="false"></textarea>
+  <div class="frow" style="margin-top:10px">
+    <button class="btn" id="pcopy">复制这段提示词</button>
+    <span class="meta" id="ppath"></span>
+  </div>
+</section>
+
+<section id="v-notes">
+  <div class="why"><b>这个标签页是给你自己记东西用的</b>：备忘只存在你浏览器的
+    <code>localStorage</code> 里，不进 <code>data/*.json</code>、不参与构建、不会上传，
+    也不会出现在导出的接入配置里。改完字就自动存，关页面、关浏览器、第二天再开都在。
+    <b>但它是跟这台电脑、这个浏览器绑定的</b>——换机器或换浏览器不会跟过去，
+    清浏览器站数据也会一起清掉，所以关键信息建议偶尔用「导出全部」备份一份。</div>
+
+  <div class="filters">
+    <input type="text" id="note-title" placeholder="标题（例：New API 接入地址 / 客户口径 / 常用参数）">
+    <textarea id="note-body" rows="2" placeholder="内容，换行没问题…"></textarea>
+    <button class="btn" id="note-add">新增一条</button>
+  </div>
+
+  <div class="notebar">
+    <button class="btn ghost" id="note-export">导出全部</button>
+    <button class="btn ghost" id="note-clear" style="border-color:var(--bad);color:var(--bad)">清空全部</button>
+    <span class="meta" id="note-saved"></span>
+  </div>
+
+  <div id="notelist"></div>
+</section>
+
+<footer id="footer"></footer>
+</div>
+
+<div id="cbar">
+  <div class="items" id="citems"></div>
+  <button class="btn" id="docmp">并排对比</button>
+  <button class="btn ghost" id="clrcmp">清空</button>
+</div>
+
+<div id="modal"><div class="mbox">
+  <span class="mclose" id="mclose">&times;</span>
+  <div id="mcontent"></div>
+</div></div>
+
+<script id="payload" type="application/json">/*__PAYLOAD__*/{}</script>
+<script>
+const P = JSON.parse(document.getElementById('payload').textContent);
+const M = P.meta, CH = P.channels, MODELS = P.models;
+const CHMAP = {}; CH.forEach(c => CHMAP[c.id] = c);
+const VMAP = {}; P.vendors.forEach(v => VMAP[v.id] = v);
+
+const MODAL_CN = {text:'文', image:'图', audio:'音', video:'视', embedding:'向量', pdf:'PDF'};
+const REASON_CN = {none:'不支持', toggle:'开关', effort:'可调档', always:'常开'};
+const ACC_CN = {api:'API', client:'仅客户端'};
+const ONB_CN = M.onboarding_types;
+const FT_CN = {}; Object.keys(M.free_types).forEach(k => FT_CN[k] = M.free_types[k].name);
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* 叙述性文本：数据串里用 `xxx` 表示强调，这里渲染成 <code>，而不是让反引号原样显示 */
+const md = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
+/* 门槛字典取不到时（新增渠道填了未登记的值）不要 undefined，更不要白屏 */
+const onbName = k => (ONB_CN[k] || {}).name || k || '未核实';
+const fmt = n => n == null ? '—' : n.toLocaleString('en-US');
+/* 官方下架日已过 = 条目作废待撤。按打开页面的当地零点判定，与顶部到期横幅同一口径 */
+const expBase = (() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; })();
+const isExpired = m => !!m.expiry && new Date(m.expiry + 'T00:00:00') < expBase;
+const modals = a => (a || []).map(x => MODAL_CN[x] || x).join('·') || '—';
+const srcChip = lv => {
+  const s = M.source_levels[lv]; if (!s) return '';
+  return '<span class="src" style="background:' + esc(s.color) + '22;color:' + esc(s.color) + '">' + esc(lv) + '</span>';
+};
+const scoreCell = v => v == null ? '<span style="color:var(--fg3)">—</span>'
+  : '<span class="sc sc' + v + '">' + v + '</span>';
+const chName = id => (CHMAP[id] && CHMAP[id].name) || id;
+
+/* 「中国可直连」三态：模型显式值 > 渠道默认值 > 未核实。
+   以前缺字段一律渲染成「是」，等于把假设当核实结果 */
+function cnOK(m) {
+  if (m.available_cn === true || m.available_cn === false) return m.available_cn;
+  const c = (CHMAP[m.channel] || {}).available_cn;
+  return c === true || c === false ? c : null;
+}
+const cnInherited = m => m.available_cn !== true && m.available_cn !== false
+  && cnOK(m) !== null;
+
+/* ---------- 头部 ---------- */
+function head() {
+  $('#title').textContent = M.title;
+  $('#subtitle').textContent = M.subtitle;
+  const txt = MODELS.filter(m => m.is_text).length;
+  $('#statbar').innerHTML =
+    '<span>数据核实：<b>' + M.data_verified_at + '</b></span>' +
+    '<span>构建：<b>' + M.built_at + '</b></span>' +
+    '<span>渠道：<b>' + CH.length + '</b></span>' +
+    '<span>模型：<b>' + MODELS.length + '</b>（文本类 ' + txt + '）</span>' +
+    '<span>厂商：<b>' + P.vendors.length + '</b></span>' +
+    '<span>未证实：<b>' + P.unverified.length + '</b> 条</span>';
+  $('#disclaim').textContent = M.disclaimer;
+
+  renderStale();
+
+  /* ---------- 到期提醒（expiry 已过期或 30 天内） ---------- */
+  /* 按「打开页面的当天」算剩余天数 —— 用 built_at 的话，隔几天再打开横幅就是过期数字 */
+  const base = new Date(); base.setHours(0, 0, 0, 0);
+  const gone = [], soon = [];
+  MODELS.forEach(m => {
+    if (!m.expiry) return;
+    const left = Math.round((new Date(m.expiry + 'T00:00:00') - base) / 86400000);
+    const label = chName(m.channel) + ' · ' + m.id + ' → ' + m.expiry;
+    if (left < 0) gone.push(label + '（已下线 ' + (-left) + ' 天，请核实是否从清单移除）');
+    else if (left <= 30) soon.push(label + '（还剩 ' + left + ' 天）');
+  });
+  if (gone.length + soon.length) {
+    const eb = $('#expwarn');
+    eb.style.display = '';
+    if (!gone.length) eb.classList.add('ok');
+    eb.innerHTML = '<b>⏳ 到期提醒</b><br>' + gone.concat(soon).map(esc).join('<br>');
+  }
+
+  $('#footer').innerHTML = '数据版本 ' + M.version + ' · 核实于 ' + M.data_verified_at +
+    ' · 构建于 ' + M.built_at +
+    '。<b>政策会变，数字会过期</b>——重新核实请跑 <code>python tools/check_live.py</code>' +
+    '（免 Key 拉各家官方模型清单做对比），再让 AI 走「巡检更新」页的提示词。' +
+    '新增渠道只需往 <code>data/models/</code> 加一个 JSON 文件，详见 <code>README.md</code>。' +
+    '<br>';
+}
+
+/* ---------- 数据新鲜度：按「打开页面的当天」算，跟上面的到期提醒同一套逻辑 ---------- */
+/* 只在真有超期时才显示。它纯粹是按日期算出来的提醒，不会联网去查新政策 */
+function renderStale() {
+  const box = $('#stalebox');
+  if (!box) return;
+  const base = new Date(); base.setHours(0, 0, 0, 0);
+  const thrOf = lv => (M.source_levels[lv] || {}).days || 30;
+  const ageOf = d => d == null ? null
+    : Math.round((base - new Date(String(d) + 'T00:00:00')) / 86400000);
+
+  const rows = [];
+  CH.forEach(c => {
+    const a = ageOf(c.verified_at), thr = thrOf(c.source_level);
+    let n = 0;
+    MODELS.forEach(m => {
+      if (m.channel !== c.id) return;
+      const ma = ageOf(m.verified_at);
+      if (ma != null && ma > thrOf(m.source_level || c.source_level)) n++;
+    });
+    if ((a != null && a > thr) || n) rows.push({ c: c, age: a, thr: thr, n: n });
+  });
+
+  if (!rows.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  rows.sort((x, y) => (y.age || 0) - (x.age || 0));
+
+  let h = '<h3>日历提醒：有 ' + rows.length + ' 家渠道按核实日期算已过保质期</h3>' +
+    '<div style="color:var(--fg2);margin:-4px 0 8px">这只是一个日期减法，回答的是「你多久没看了」，' +
+    '<b>不代表政策动了</b> —— 政策动没动只有 ' + '<code>tools/check_live.py</code> 知道</div><ul>';
+  rows.forEach(r => {
+    h += '<li><b>' + esc(r.c.name) + '</b> — 核实于 ' + esc(r.c.verified_at || '?') +
+      '（已 ' + r.age + ' 天，' + esc(r.c.source_level || '?') + ' 档保质期 ' + r.thr + ' 天）' +
+      (r.n ? ' · 其中 ' + r.n + ' 个模型也超期' : '') + '</li>';
+  });
+  h += '</ul><div style="margin-top:8px;color:var(--fg2)">' +
+    '<b>⚠ 核实日期新鲜 ≠ 数据没变。</b>免费政策可以在一两天内悄悄改掉，不预告、不发公告，' +
+    '上面这个清单只是按日期做减法，它不知道政策变没变。要确认得跑 ' +
+    '<code>python tools/check_live.py</code>（拉官方接口实况做机器对比），见「巡检更新」页。</div>';
+  box.style.display = '';
+  box.innerHTML = h;
+}
+
+/* ---------- 实况巡检结果（tools/check_live.py 产出，构建时注入） ---------- */
+/* 顶部横幅只报「消失了什么」，因为下架是唯一会让你白跑一趟的变化。
+   完整明细（新增 / 规格变动 / 下架时间）放在「巡检更新」页。 */
+/* 这份报告本身也会放凉。它不是 verified_at 那种「你多久没看了」的假指标 ——
+   generated_at 就是上次实况的时间戳，摆久了读数自然失真 */
+function liveAge(L) {
+  const d = new Date(String(L.generated_at || '').replace(' ', 'T'));
+  if (isNaN(d.getTime())) return '';
+  const days = Math.floor((Date.now() - d.getTime()) / 86400000);
+  if (days < 1) return '';
+  return '（距今 ' + days + ' 天' + (days >= 3 ? '，政策随时会悄悄改，建议重跑巡检' : '') + '）';
+}
+
+function renderLive() {
+  const box = $('#livebox');
+  if (!box) return;
+  const L = P.live;
+  if (!L) { box.style.display = 'none'; return; }
+
+  const gone = [];
+  (L.channels || []).forEach(r => (r.removed || []).forEach(id => gone.push({ ch: r.name, id: id })));
+
+  if (!gone.length) { box.style.display = 'none'; return; }
+  const byCh = {};
+  gone.forEach(g => { (byCh[g.ch] = byCh[g.ch] || []).push(g.id); });
+
+  let h = '<h3>实况巡检：' + gone.length + ' 个模型已从官方清单消失</h3>';
+  Object.keys(byCh).forEach(k => {
+    h += '<div class="row"><b>' + esc(k) + '</b>（' + byCh[k].length + ' 个）：' +
+      byCh[k].slice(0, 4).map(x => '<span class="id">' + esc(x) + '</span>').join(' ') +
+      (byCh[k].length > 4
+        ? ' <span style="color:var(--fg2)">… 另有 ' + (byCh[k].length - 4) + ' 个</span>' : '') +
+      '</div>';
+  });
+  h += '<div style="margin-top:8px;color:var(--fg2)">巡检于 ' + esc(L.generated_at || '?') +
+    liveAge(L) + (L.egress && L.egress.proxy ? ' · <b>本轮经代理出口</b>（清单是代理那侧看到的）' : '') +
+    ' · <span class="go" onclick="showTab(\'update\')">看完整明细与下一步 →</span></div>';
+  box.style.display = '';
+  box.innerHTML = h;
+}
+
+/* ---------- 巡检更新页里的完整明细表 ---------- */
+function renderLiveTable() {
+  const box = $('#livetable');
+  if (!box) return;
+  const L = P.live;
+  if (!L) {
+    box.innerHTML = '<div class="why">还没跑过实况巡检。在项目根目录依次执行 ' +
+      '<code>python tools/check_live.py</code> 和 <code>python tools/build.py</code>，' +
+      '这里就会显示官方接口与本项目记录的逐条差异。</div>';
+    return;
+  }
+  const sm = L.summary || {};   // 报告是上一版格式或写坏了也不要抛，整页交互都会跟着死
+  let h = '<div class="count">实况巡检 <b>' + esc(L.generated_at || '?') + '</b>' + liveAge(L) + ' · ' +
+    '消失 <b>' + (sm.removed || 0) + '</b> · 新增免费 <b>' + (sm.added_free || 0) + '</b> · ' +
+    '规格变动 <b>' + (sm.spec_changed || 0) + '</b> · 下架时间变动 <b>' + (sm.expiry_changed || 0) + '</b> · ' +
+    '网页锚点丢失 <b>' + (sm.doc_missing || 0) + '</b></div>';
+  /* 出口必须交代：官方清单会按地区发（Zen 对中国 403），代理侧和大陆直连看到的不是同一份 */
+  if (L.egress_note) {
+    h += '<div class="why" style="margin:6px 0 10px">本轮网络出口：' + esc(L.egress_note) +
+      (L.egress && L.egress.proxy ? ' —— <b>差异可能是出口造成的，不一定是政策变了</b>'
+                                 : ' —— 直连，看到的即大陆侧清单') + '</div>';
+  }
+  h += '<div class="tblwrap"><table><thead><tr><th>渠道</th><th>官方/本地</th><th>差异</th></tr></thead><tbody>';
+  (L.channels || []).forEach(r => {
+    if (r.error) {
+      h += '<tr><td>' + esc(r.name) + '</td><td>—</td>' +
+        '<td style="color:var(--bad)">这次没查到（' + esc(r.error) + '）—— <b>不算「没变化」</b></td></tr>';
+      return;
+    }
+    const bits = [];
+    (r.removed || []).forEach(x => bits.push('<span style="color:var(--bad)">🔴 消失 ' + esc(x) + '</span>'));
+    (r.added_free || []).forEach(x => bits.push('<span style="color:var(--ok)">🟢 新增免费 ' + esc(x) + '</span>'));
+    (r.spec_changed || []).forEach(x => bits.push('🟡 ' + esc(x.id) + ' · ' + esc(x.field) +
+      '：' + esc(x.old) + ' → ' + esc(x.new)));
+    (r.expiry_changed || []).forEach(x => bits.push('⏳ ' + esc(x.id) + ' 下架时间：' +
+      esc(x.old || '无') + ' → ' + esc(x.new || '无')));
+    (r.known_noise || []).forEach(x => bits.push('<span style="color:var(--fg3)">⚪ ' +
+      esc(x.id) + '（不收：' + esc(x.reason) + '）</span>'));
+    if (r.added_unknown && r.added_unknown.length) {
+      bits.push('<span style="color:var(--fg3)">另有 ' + r.added_unknown.length +
+        ' 个新增，接口不给价格、免费与否未知</span>');
+    }
+    h += '<tr><td>' + esc(r.name) + '</td><td>' + esc(r.total_live) + ' / ' + esc(r.total_local) + '</td>' +
+      '<td>' + (bits.length ? bits.join('<br>') : '<span style="color:var(--ok)">✓ 与记录一致</span>') +
+      '</td></tr>';
+  });
+  /* SKIP 回访：每轮重测一次，「X 月 X 日实测 401」不能变成永久记忆 */
+  const probe = {};
+  (L.skip_probe || []).forEach(p => { probe[p.id] = p; });
+  (L.skipped || []).forEach(s => {
+    const p = probe[s.id];
+    let back = '';
+    if (p) {
+      back = !p.tried ? '<br><span style="color:var(--fg3)">本轮回访：试不了 —— ' + esc(p.why) + '</span>'
+        : p.now_free ? '<br><span style="color:var(--ok)">🟢 本轮回访：' + esc(p.url) +
+            ' 现在能匿名拉到清单了（' + esc(p.total_live) + ' 条）—— 该把它从 SKIP 挪进 LIVE</span>'
+        : '<br><span style="color:var(--fg3)">本轮回访：仍然查不了（' + esc(p.error || '返回结构不是清单') +
+            '）· ' + esc(L.generated_at || '') + '</span>';
+    }
+    h += '<tr><td>' + esc(s.name) + '</td><td>—</td>' +
+      '<td style="color:var(--fg2)">本工具查不了：' + esc(s.reason) +
+      ' —— <b>只能靠 AI 联网核文档</b>' +
+      (s.doc ? '<br>官方文档：' + s.doc.split(/\s*;\s*/).filter(Boolean).map(u =>
+        /^https?:\/\//.test(u)
+          ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(u) + '</a>'
+          : esc(u)).join('　') : '') + back +
+      '</td></tr>';
+  });
+  /* 网页锚点：免费口径只写在官方网页、清单接口里没有价格字段的几家 */
+  (L.doc_checks || []).forEach(d => {
+    let bits;
+    if (d.error) {
+      bits = '<span style="color:var(--bad)">⚠ 页面这次没抓到（' + esc(d.error) +
+        '）—— <b>不算「锚点都在」</b></span>';
+    } else if (d.missing && d.missing.length) {
+      bits = '<span style="color:var(--bad)">🔴 官方页上已经找不到：' + esc(d.missing.join('、')) +
+        ' —— 记录所依据的原文没了，必须联网重核</span>';
+    } else if (d.count_ok === false) {
+      bits = '<span style="color:var(--warn)">🟡 字串还在，但出现次数变了：' +
+        Object.keys(d.counts || {}).map(k => '「' + esc(k) + '」' + d.counts[k] + ' 次').join('，') +
+        ' —— 官方可能在这页加/撤了同类条目</span>';
+    } else {
+      bits = '<span style="color:var(--ok)">✓ 网页锚点都在</span>';
+    }
+    if (d.page_errors && d.page_errors.length) {
+      bits += '<br><span style="color:var(--bad)">⚠ 附加页没抓到：' + esc(d.page_errors.join('；')) +
+        ' —— 不算「锚点都在」</span>';
+    }
+    let links = (d.pages && d.pages.length > 1 ? d.pages : [{ page: d.page }]).map(p =>
+      '<br><a href="' + esc(p.page) + '" target="_blank" rel="noopener">' + esc(p.page) + '</a>' +
+      (p.why ? ' <span style="color:var(--fg3)">' + esc(p.why) + '</span>' : ''));
+    h += '<tr><td>' + esc(d.name) + ' <i style="color:var(--fg3);font-style:normal">（网页锚点）</i></td>' +
+      '<td>—</td><td>' + bits + links +
+      (d.note ? '<br><span style="color:var(--fg3)">' + esc(d.note) + '</span>' : '') +
+      '</td></tr>';
+  });
+  if (L.doc_blind && L.doc_blind.length) {
+    h += '<tr><td colspan="3" style="color:var(--fg3)">锚点也覆盖不到（正文靠 JS 渲染，匿名抓只拿得到壳）：' +
+      L.doc_blind.map(b => '<b>' + esc(b.name) + '</b> —— ' + esc(b.why)).join('<br>') +
+      '<br>⚠ 锚点只回答「那句话还在不在」，<b>命中不代表政策没变</b>：页面留着旧句子、' +
+      '政策已经改口的情况它看不见，仍要按提示词联网核原文</td></tr>';
+  }
+  /* NVIDIA 逐模型页实况：免费徽章 + 输出上限（清单接口无价格字段，这一节才是免费真实口径） */
+  if (L.nvidia_pages) {
+    const N = L.nvidia_pages;
+    let bits;
+    if (!N.ok) {
+      bits = '<span style="color:var(--bad)">⚠ ' + esc(N.error || '本轮没查出结果') +
+        ' —— 不算「没变化」</span>';
+    } else {
+      bits = '抓通 ' + esc(N.checked) + ' 个模型页：';
+      if (N.badge_removed && N.badge_removed.length)
+        bits += '<br><span style="color:var(--bad)">🔴 徽章消失（本地仍记为免费）：' + esc(N.badge_removed.join('、')) + '</span>';
+      if (N.deprecated_collected && N.deprecated_collected.length)
+        bits += '<br><span style="color:var(--bad)">🔴 已收录模型挂着官方弃用徽章：' + esc(N.deprecated_collected.join('、')) + ' —— 与徽章消失同级，提请复核是否撤条</span>';
+      if (N.badge_new_free && N.badge_new_free.length)
+        bits += '<br><span style="color:var(--warn)">🟢 未收录但挂着免费徽章：' + esc(N.badge_new_free.join('、')) + ' —— 待复核是否收录</span>';
+      (N.badge_known_noise || []).forEach(x => {
+        bits += '<br><span style="color:var(--fg3)">⚪ 免费徽章在但已判定不收：' + esc(x.id) + ' —— ' + esc(x.reason) + '</span>';
+      });
+      (N.ctx_out_changed || []).forEach(x => {
+        bits += '<br><span style="color:var(--warn)">🟡 输出上限漂移 ' + esc(x.id) + '：' + esc(x.old) + ' → ' + esc(x.new) + '</span>';
+      });
+      (N.ctx_out_fillable || []).forEach(x => {
+        bits += '<br><span style="color:var(--fg2)">⚪ ' + esc(x.id) + ' 本地留白、页面查得到上限 = ' + esc(x.cap) + '，可回填</span>';
+      });
+      (N.ctx_out_ambiguous || []).forEach(x => {
+        bits += '<br><span style="color:var(--fg2)">⚪ ' + esc(x.id) + ' 官方给多个上限值（' + esc(x.caps.join(' / ')) + '），不据此下结论</span>';
+      });
+      if ((N.page_errors || []).length)
+        bits += '<br><span style="color:var(--fg3)">⚪ 页面抓不通 ' + esc(N.page_errors.length) + ' 个</span>';
+      if (N.ok && !(N.badge_removed.length || N.deprecated_collected.length ||
+                   N.badge_new_free.length || N.ctx_out_changed.length))
+        bits += ' <span style="color:var(--ok)">✓ 已收录条目徽章全在，输出上限无漂移</span>';
+    }
+    h += '<tr><td>NVIDIA <i style="color:var(--fg3);font-style:normal">（逐模型页实况）</i></td>' +
+      '<td>—</td><td>' + bits +
+      '<br><span style="color:var(--fg3)">带 Accept: text/html 抓 build.nvidia.com 模型页，实体级徽章锚 + 内嵌 OpenAPI 的 max_tokens.maximum</span></td></tr>';
+  }
+  /* 草稿池：免费政策没了的渠道会从正式清单移出，但每轮巡检都要重新看它有没有恢复 */
+  (L.drafts || []).forEach(d => {
+    h += '<tr><td>' + esc(d.name) + ' <i style="color:var(--fg3);font-style:normal">（草稿池）</i></td>' +
+      '<td>—</td><td style="color:var(--fg2)">已移出正式清单，' + esc(d.reason) +
+      '。<b>每轮都要重新核一次官方有没有恢复免费</b>' +
+      (d.url ? '<br>官方链接：' + (/^https:\/\//.test(d.url)
+        ? '<a href="' + esc(d.url) + '" target="_blank" rel="noopener">' + esc(d.url) + '</a>'
+        : esc(d.url)) : '') +
+      (d.seen_at ? '<br>上次登记核实：' + esc(d.seen_at) : '') +
+      (d.hint ? '<br>回访要点：' + esc(d.hint) : '') +
+      '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  box.innerHTML = h;
+}
+
+/* ---------- 巡检更新：生成可直接贴给 AI 的提示词 ---------- */
+/* 项目路径从 file:// 地址实时推导 —— HTML 被挪到别的机器/网盘，路径自己跟着变 */
+const PKINDS = [
+  { id: 'live', name: '实况巡检',
+    note: '默认用这个。先跑 tools/check_live.py 拿到机器可查的差异，'
+        + '再针对「消失了 / 新增了」的条目补核实。不看保质期——保质期没过不代表政策没变。' },
+  { id: 'new', name: '新渠道调研',
+    note: '听说有新的免费平台时用。粘贴后记得把里面的平台名填进去。' },
+  { id: 'full', name: '全面复核',
+    note: CH.length + ' 家全查一遍，不看保质期。先跑一次 tools/check_live.py 拿机器差异打底，'
+        + '但「差异清零」不等于复核完成 —— 剩下那几家仍要逐家联网核官方文档。'
+        + '适合隔一两个月做一次，或你怀疑数据整体过时了。' }
+];
+let PKIND = 'live';
+
+function projDir() {
+  const h = location.href;
+  if (h.indexOf('file:') !== 0) return '';
+  let p = h.replace(/^file:\/\//, '').split('#')[0].split('?')[0];
+  try { p = decodeURIComponent(p); } catch (e) {}
+  p = p.replace(/^\/([A-Za-z]:)/, '$1').replace(/\//g, '\\');
+  const i = p.lastIndexOf('\\');
+  return i > 0 ? p.slice(0, i) : p;
+}
+
+/* 边界条款三种场景共用 —— 这是「AI 只出报告、不碰数据」的硬约束 */
+const BOUNDARY = [
+  '绝对不能做（这几条比完成任务更重要）：',
+  '- 改 data/*.json 之前，必须先用大白话逐条问我，我同意了你才改',
+  '- 新发现的渠道先进 data/inbox.json（status 填 todo），别直接塞进正式数据',
+  '- 不要跑 git commit —— 改完跑 python tools/build.py 自检，再把 git diff 给我看，我自己决定提交',
+  '- 查不到就留 null，不要填「看起来合理」的数字',
+  '- 模型评分（score_coding / score_zh）是一个模型一个分，全库一致（09-24 口径，详见 meta.json 字段字典）：',
+  '  同名条目（只差批次尾号 / `:free` / `-free`）直接沿用；同系列新一代可沿用前代；跨 variant 不抄、旧代不抄新代；',
+  '  分数打架先看证据链不看大小：缺分条目不许自造高分、孤立无取证的高分不采，但更晚且有取证的判断可覆盖早期保守值（kimi-k3 教训）；',
+  '  凡沿用/统一必须在 pitfall 注明出处 —— build 自检会报同模型跨渠道冲突，别指望混过去',
+  '- available_cn 是三态：没依据就留 null。填了必须同时写 available_cn_src 说明实测依据；',
+  '  渠道级那个值会被该渠道所有未填的模型继承，一个没依据的布尔值能污染几十条记录。',
+  '  不许按「中国平台=可直连 / 外国平台=不可直连」推定 —— 这条已被实测推翻，只能看实测响应码',
+  '- 删一条模型条目时，四处派生值必须跟着改：本渠道 free_model_count、渠道 notes 里的计数口径、',
+  '  vendors.json 该厂商的 free_note、unverified.json 里引用到这个计数的条目；',
+  '  再往 changes.json 追加一条带日期的「下线」记录。历史条目里提到该模型的不要改写 —— 那是当时的事实',
+  '- 「是否收录新渠道」和「source_level 填哪一档」是我的判断，你只给建议',
+  '- 优惠 / 折扣这类「官方确实在送，但按口径不该进正式清单」的信息，写进 data/promos.json 一条纯文本，',
+  '  别塞进 channels.json / models/，也别拿它当「这家能白嫖」的证据',
+  '- 目录有规矩：人读的报告写进 reports/，机器产物在 data/out/，',
+  '  别在 data/ 根目录新建文件（data/ 根下只放 channels.json / models/ / changes.json / promos.json 这些既有数据文件）',
+  '- 脚本都在 tools/ 下，命令在项目根目录跑：python tools/check_live.py、python tools/build.py',
+  '- build.py 不带任何参数',
+  '- Key 的唯一合法存放处是 data/.keys.local.json（gitignore，格式 {"keys":{"渠道":"Key"},"extra":{}}），',
+  '  本项目已授权巡检时读它对相应渠道做带 Key 实测（比如核实输出的真实上限、宣称的参数是否生效）。',
+  '  但绝不把 Key 抄进任何 data/*.json、报告、终端输出或给维护者的消息 —— build.py 的硬红线会拦，别去试。',
+  '  ⚠ NVIDIA 免费端点很慢（实测单次可长达 115 秒），带 Key 调用超时给到 300 秒以上'
+].join('\n');
+
+function renderPrompt() {
+  const box = $('#promptbox');
+  if (!box) return;
+
+  const pk = $('#pkind');
+  if (pk && pk.dataset.built !== '1') {
+    pk.innerHTML = PKINDS.map(k =>
+      '<div class="chip" data-pk="' + k.id + '">' + esc(k.name) + '</div>').join('');
+    pk.dataset.built = '1';
+    pk.querySelectorAll('[data-pk]').forEach(el => {
+      el.onclick = () => { PKIND = el.dataset.pk; renderPrompt(); };
+    });
+  }
+  if (pk) pk.querySelectorAll('[data-pk]').forEach(el =>
+    el.classList.toggle('on', el.dataset.pk === PKIND));
+
+  const conf = PKINDS.filter(k => k.id === PKIND)[0] || PKINDS[0];
+  const note = $('#pnote');
+  if (note) note.innerHTML = '<b>' + esc(conf.name) + '</b>：' + md(conf.note);
+
+  const dir = projDir();
+  const proj = dir || '【填项目目录的绝对路径】';
+  const pHead = [
+    '项目目录：' + proj,
+    '流程文件：项目根目录的 AGENTS.md（收录判据、字段口径、落库流程都写在里面，先读一遍再动手）'
+  ].join('\n');
+
+  let body;
+  if (PKIND === 'new') {
+    body = [
+      '我要调研一个新的免费大模型 API 渠道：【把平台名填在这里】',
+      '',
+      pHead,
+      '',
+      '按 AGENTS.md 的流程走：',
+      '1. 先往 data/inbox.json 加一条草稿（平台名 + 官方链接 + 在哪看到的，status 填 todo）',
+      '2. 联网核实，只认官方文档 / 定价页 / FAQ / 控制台实测。第三方转述不采信 ——',
+      '   这个项目的 changes.json 里记过一次教训：网传「魔搭 2000 次/天 + 单模型 500 次」',
+      '   在现行中英文官方文档里根本不存在',
+      '3. 维护者判定「收录」之后才落库：channels.json 一条 + data/models/<id>.json 一个数组文件，',
+      '   缺的厂商补进 vendors.json，并往 changes.json 追加一条带日期的「新增」',
+      '4. 同一次改动里在 tools/check_live.py 登记这家：有免 Key 能拉的清单端点就加进 LIVE',
+      '   （写清怎么判免费），查不动的就加进 SKIP 并写明为什么查不动。',
+      '   漏了这步，以后每轮实况巡检都看不见这家 —— 报告会写成「0 处变化」，看着像查过且没变',
+      '5. 最后跑 python tools/build.py 自检（这一步会把新家数渲染进页面和提示词）',
+      '',
+      '⚠️ 最重要的一条 —— 怎么把结果告诉我：',
+      '我看不懂 JSON，也分不清各种参数。请用最简单的大白话，一条一条问我。',
+      '比如：「这个平台注册要不要实名？」「免费额度每天多少？」「值不值得收录？」',
+      '我只会回答「要」或「不要」，你说要改的数字我确认后你自己改 data/*.json。',
+      '',
+      '不要给我贴 JSON 片段。不要让我手动落库。',
+      '确认完一条你就改一条，最后统一跑 build 自检 + git diff 给我看。',
+      '',
+      BOUNDARY
+    ].join('\n');
+  } else if (PKIND === 'full') {
+    // 思路B：草稿池里 status != done 的条目（比如被移出的 B.AI）自动拼进提示词，
+    // 下次复核不只查在库渠道，也会顺带核它们是否恢复了免费模型。
+    const inboxItems = ((P.inbox || {}).items || []).filter(it => it.status !== 'done');
+    body = [
+      '对全部 ' + CH.length + ' 家渠道做一次完整的政策复核。不需要替我省 token，查细一点。',
+      '',
+      pHead,
+      '',
+      '逐家联网核实（只认官方原文），产出 reports/巡检报告-YYYY-MM-DD.md，每家写清：',
+      '- 现行免费政策的官方原文引用 + 来源链接',
+      '- 与本项目现有记录是否一致',
+      '- 官方没说清的，建议记进未证实清单',
+      '- 客户端类（无公开清单端点）和要 Key 的渠道，同样由你核官方文档 / 定价页 / FAQ；',
+      '  只有必须登录控制台或在客户端里点一遍才能确认的事，才单列「需 user 实测确认」，',
+      '  不要把整家推给 user 去查',
+      '- 各家新出现或改了口径的优惠 / 折扣活动（不符合收录口径的那类：要付费订阅才算数、',
+      '  渠道内的第二三条路线、已下架渠道的促销页），一并往 data/promos.json 追加纯文本记录，',
+      '  并在报告里单列一节「优惠情报」，逐条抄官方原文 + 起止时间',
+      '',
+      '打底步骤（是线索，不是替身）：先跑一次 python tools/check_live.py。',
+      '它能一秒抓出「某条免费模型上架次日就撤回」这类只体现在接口实况里的事，',
+      '报告里 skipped 那几家（机器拉不到清单的）每条都带 doc 官方文档链接，从那儿开始查。',
+      '报告里还有两份别当空字段：doc_checks（网页锚点：官方定价/活动页上我们依据的原话还在不在）',
+      '和 skip_probe（每轮重测 SKIP 那几家有没有开放匿名清单）；doc_blind 是锚点也覆盖不到的那几家。',
+      'nvidia 另有 nvidia_pages 一节：逐模型页核免费徽章与 max_tokens 上限，新增徽章/徽章消失都会点名。',
+      '⚠ 但「差异为 0、锚点全过」绝不等于复核完成：它只覆盖免 Key 能拉到清单的那几家，',
+      '  限额口径、注册门槛、数据用于训练这类政策文字只有官方文档页会讲。',
+      '  所以先跑它拿线索，跑完仍然要按上面四件事逐家核文档。',
+      '',
+      inboxItems.length ? [
+        '另外，data/inbox.json 里还有 ' + inboxItems.length + ' 条草稿池条目（status != done），也请顺带联网核一下它们当前是否提供免费 API：',
+        inboxItems.map(it => '- ' + it.name + '（' + (it.seen_at || '—') + '）回访要点：' +
+          ((it.hint || '（这条还没有 hint，按官方链接自行判断该核哪句话）').replace(/\s*\n\s*/g, ' ')) + ' — ' + (it.url || '—')).join('\n'),
+        '（这里只带一句「回访要点」，不带历轮调研全文 —— 这份 HTML 会被转发，全文只存在本地 data/inbox.json 的 note 里）',
+        '哪一家恢复了免费模型，在报告里单独开一节，附上官方原文引用，我看过之后再决定要不要重新收录；',
+        '仍没恢复的，把 inbox.json 里那条的 note 更新成最新状况，hint 跟着改成「下一轮该重核官方哪句话」，status 保持 todo。',
+        ''
+      ] : [],
+      '⚠️ 最重要的一条 —— 怎么把结果告诉我：',
+      '我看不懂 JSON，也分不清各种参数。请用最简单的大白话，一条一条问我。',
+      '每条只问一个判断题，格式像这样：',
+      '',
+      '  「第 5 条：SenseNova 的额度重置口径，官方已从「每日 0 点」改成滚动窗口，要不要改 quota_reset？」',
+      '  → 我只会回答「改」或「不改」，你说要改的数字我确认后你自己改 data/*.json。',
+      '',
+      '不要给我贴 JSON 片段，不要讲命令行参数，不要让我手动落库。',
+      '确认完一条你就改一条，最后统一跑 build 自检 + git diff 给我看。',
+      '',
+      BOUNDARY
+    ].join('\n');
+  } else {
+    body = [
+      '你要帮我巡检「大模型白嫖计划」这个项目的免费大模型 API 渠道，'
+      + '找出官方那边已经变了、但我们这边还没跟上记录的地方。',
+      '',
+      pHead,
+      '',
+      '背景：这是我自己维护的免费大模型 API 渠道导航，数据全在 data/*.json，',
+      '靠 tools/build.py 渲染成单文件 HTML。数据可信度全靠「只认官方原文」这条纪律撑着。',
+      '注意：核实日期新鲜不代表数据没变——免费政策可以在一两天内悄悄改掉、不预告；',
+      '真正的基线是官方接口现在长什么样，不是上次核实是哪天。',
+      '',
+      '步骤：',
+      '1. 在项目目录跑：python tools/check_live.py',
+      '   它会拉各家官方的公开模型清单，跟我们的记录做机器对比，',
+      '   直接算出「消失了什么 / 新增了什么免费货 / 规格和下架时间变了什么」。',
+      '   结果在 data/out/.live_report.json —— 这份是实测，优先级最高。',
+      '   ⚠ 报告里的 egress_note 写明本轮是从哪个网络出口看官方的。挂着系统代理时拉到的是',
+      '   代理落地那侧的清单，而官方清单会按地区发（Zen 就对中国返回 403）。',
+      '   这只当解读差异时的背景看：不必为此更换网络或代理。',
+      '   怀疑某条差异是出口造成的，就去官方文档页二次确认；确认不了就标「疑似」，别硬下结论。',
+      '2. 读 data/out/.live_report.json，逐条处理：',
+      '   - 「消失」的模型：去官方文档/模型页确认是不是真下架了（也可能是接口临时抽风，'
+      + '    同一家跑两次再看；仍查不到就按「疑似下架」记）',
+      '   - 「新增免费」的模型：去官方页面确认免费范围、上下文/输出上限',
+      '   - 「规格变动」「下架时间变动」：以官方接口或文档为准',
+      '   - doc_checks（网页锚点）：这几家的「免费」只写在官方定价页 / 活动页，清单接口里没有价格字段。',
+      '     missing 非空 = 我们记录所依据的那句原文在官方页上找不到了 → 优先联网重核这一家；',
+      '     counts 变了 = 字串还在但次数变了（官方在这页加/撤了同类免费条目）；',
+      '     ⚠ 锚点全过并不等于政策没变 —— 它只比对字面串，页面留着旧句子而政策改口的情况看不见',
+      '   - skip_probe（SKIP 回访）：官方式哪天开放匿名清单会在这里露头。',
+      '     now_free=true 就提醒我把该渠道从 check_live.py 的 SKIP 挪进 LIVE',
+      '   - nvidia_pages（NVIDIA 逐模型页实况）：已收录条目的免费徽章、红色弃用徽章、输出上限漂移都在这一节点名。',
+      '     badge_known_noise 是已判定不收的降噪行 —— 别再拿它问我收不收，但若官方文案与登记的 reason 出现出入要标出来；',
+      '     ctx_out_ambiguous 是官方页面给了多个上限值、等带 Key 实测或官方改口的条目',
+      '3. 本工具查不了的渠道（live_report 的 skipped 字段）、以及草稿池里已下架但每轮都要重看的',
+      '   渠道（drafts 字段），都必须靠你联网核官方文档 —— 每条都带 doc / url 字段（官方说明页地址），',
+      '   从那个链接开始查，不要拿搜索引擎泛泛地搜。',
+      '   ⚠「本工具查不了」不等于「交回给 user 手工查」：官方文档 / 定价页 / FAQ 上讲得清的部分',
+      '   （免费模型清单、限额口径与重置时刻、注册门槛、数据是否用于训练、地区可用性）',
+      '   就是你要核的内容，逐条摘录官方原文并给链接。',
+      '   只有必须登录控制台、或在客户端里点一遍才能确认的事（实际能不能调通、额度实际怎么扣、',
+      '   界面里到底列了哪些模型），才单列成「需 user 实测确认」—— 别把它混进「未核实」，',
+      '   也别拿它当借口把整家都推给 user。',
+      '   不要跳过，也不要写「无变化」—— 没查就是没查',
+      '4. 官方接口返回错误（比如 401）时，写「这次没查到」而不是「没变化」—— 两者完全不同',
+      '5. 只认官方文档 / 定价页 / FAQ / 控制台实测，',
+      '   第三方聚合站、社区估算、搜索引擎推断一律不采信',
+      '6. 顺手看各家的优惠 / 折扣活动页。官方确实在送、但按口径不该进正式清单的那些',
+      '   （要付费订阅才算数的免费档、渠道内的第二三条路线、已下架渠道的促销页），',
+      '   往 data/promos.json 追加一条纯文本记录（date / channel / text / source_url / source_level），',
+      '   页面「优惠情报」页签就是它。这类信息不进 channels.json 与 models/，也不计入任何个数',
+      '7. 报告里若有「一句话实测就能关掉」的留白（某模型输出上限官方给双值、某参数宣称过但没实测），',
+      '   且对应渠道在 data/.keys.local.json 里有 Key，就按下面 Key 纪律直接跑一次带 Key 实测，别把这类缺口攒着',
+      '',
+      '⚠️ 最重要的一条 —— 怎么把结果告诉我：',
+      '我看不懂 JSON，也分不清各种命令行参数。请用最简单的大白话，一条一条问我。',
+      '每条只问一个判断题，格式像这样：',
+      '',
+      '  「第 3 条：OpenRouter 的 deepseek/deepseek-v4-flash-0731:free，官方模型页已 404、',
+      '    实时清单两轮都没有这个 ID，要不要从数据里删掉？」',
+      '  → 我只会回答「删」或「留」，你说要改的数字我确认后你自己改。',
+      '',
+      '不要给我贴 JSON 片段，不要讲命令行参数，不要让我手动落库。',
+      '确认完一条你就改一条（改 data/*.json），最后统一跑 build 自检 + git diff 给我看。',
+      '',
+      BOUNDARY,
+      '',
+      '产出报告放 reports/巡检报告-YYYY-MM-DD.md，写清逐家的结论',
+      '（变了 / 没变 / 官方说不清 / 这次没查到）+ 来源链接。',
+      '报告可以正常写，但涉及改数据的地方，走上面的大白话逐条问，不要在报告里贴 JSON 让我落库。'
+    ].join('\n');
+  }
+
+  box.value = body;
+  const pp = $('#ppath');
+  if (pp) pp.textContent = dir ? '项目路径自动识别为 ' + dir
+    : '⚠ 当前不是本地文件（file://）打开，路径要自己填';
+}
+
+function copyPrompt() {
+  const ta = $('#promptbox'), b = $('#pcopy');
+  if (!ta) return;
+  ta.focus(); ta.select();
+  try { ta.setSelectionRange(0, ta.value.length); } catch (e) {}
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  if (!ok && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(ta.value).then(() => {}, () => {});
+    ok = true;
+  }
+  if (b) {
+    b.textContent = ok ? '已复制 ✓' : '复制失败，请 Ctrl+C';
+    setTimeout(() => { b.textContent = '复制这段提示词'; }, 2000);
+  }
+}
+
+/* ---------- 筛选器 ---------- */
+const S = { scen: new Set(), chan: new Set(), access: '', onb: '', ft: '',
+  cnOnly: false, regOnly: false, scored: false, minCtx: 0, minOut: 0, q: '', sort: 'capability', dir: -1 };
+
+function buildFilters() {
+  const scen = M.scenarios.map(s => '<div class="chip" data-g="scen" data-k="' + esc(s.id) + '" title="' +
+    esc(s.desc) + '">' + esc(s.name) + '</div>').join('');
+  /* 渠道筛选：能拿 Key 的排前面，仅客户端的（access=client）统一压到最后并标注 ——
+     它们接不进通用工具，混在可调度那批里挑会挑错。
+     同组内的先后按 2026-09-24 用户手定顺序（CH_ORDER），没登记进去的按推荐度排在已知渠道之后 */
+  const CH_ORDER = ['sensenova', 'openrouter', 'agnes', 'nvidia', 'cloudflare',
+    'modelscope', 'stepfun', 'nous', 'zen', 'qoder', 'trae'];
+  const orderRank = c => { const i = CH_ORDER.indexOf(c.id); return i < 0 ? CH_ORDER.length : i; };
+  const isCli = c => c.access === 'client';
+  const chan = CH.slice().sort((a, b) =>
+      (isCli(a) - isCli(b)) || (orderRank(a) - orderRank(b)) || (a.priority - b.priority)
+    ).map(c => '<div class="chip" data-g="chan" data-k="' + esc(c.id) + '"' +
+      (isCli(c) ? ' title="' + esc('仅 app 内使用 · ' + (c.base_url || '无公开 API 端点')) + '"' : '') +
+      '>' + esc(c.name) + (isCli(c) ? '<i class="apponly">仅app</i>' : '') + '</div>').join('');
+  const onb = Object.keys(ONB_CN).map(k => '<option value="' + esc(k) + '">' + esc(ONB_CN[k].name) + '</option>').join('');
+  const ft = Object.keys(FT_CN).map(k => '<option value="' + esc(k) + '">' + esc(FT_CN[k]) + '</option>').join('');
+
+  $('#filters').innerHTML =
+    '<div class="frow"><span class="flabel">场景</span>' + scen + '</div>' +
+    '<div class="frow"><span class="flabel">渠道</span>' + chan + '</div>' +
+    '<div class="frow"><span class="flabel">接入</span>' +
+      '<div class="chip" data-g="access" data-k="api">能拿 API Key</div>' +
+      '<div class="chip" data-g="access" data-k="client">仅客户端</div>' +
+      '<span style="width:14px"></span><span class="flabel">门槛</span>' +
+      '<select id="f-onb"><option value="">不限</option>' + onb + '</select>' +
+      '<span class="flabel">免费类型</span>' +
+      '<select id="f-ft"><option value="">不限</option>' + ft + '</select>' +
+      '<span class="flabel">输入 ≥</span>' +
+      '<select id="f-ctx"><option value="0">不限</option><option value="131072">128K</option>' +
+        '<option value="262144">256K</option><option value="500000">500K</option><option value="1000000">1M</option></select>' +
+      '<span class="flabel">输出 ≥</span>' +
+      '<select id="f-out"><option value="0">不限</option><option value="32768">32K</option>' +
+        '<option value="65536">64K</option><option value="131072">128K</option><option value="262144">256K</option></select>' +
+    '</div>' +
+    '<div class="frow"><span class="flabel">搜索</span>' +
+      '<input type="text" id="f-q" placeholder="模型 ID / 厂商 / 专长关键词">' +
+      '<div class="chip" data-g="cn" data-k="1" title="排掉官方明示对中国不可用的（实测 403 那类）与渠道端点判定为不可用的；一点依据都没有的仍留在结果里">只看中国可用</div>' +
+      '<div class="chip" data-g="reg" data-k="1">只看我已注册</div>' +
+      '<div class="chip" data-g="scored" data-k="1">只看有评分</div>' +
+      '<button class="resetc" id="f-reset">重置全部</button></div>';
+
+  $('#filters').addEventListener('click', e => {
+    const d = e.target.closest('.chip'); if (!d) return;
+    const g = d.dataset.g, k = d.dataset.k;
+    if (g === 'scen' || g === 'chan') {
+      S[g].has(k) ? S[g].delete(k) : S[g].add(k); d.classList.toggle('on');
+    } else if (g === 'access') {
+      S.access = S.access === k ? '' : k;
+      document.querySelectorAll('[data-g=access]').forEach(x => x.classList.toggle('on', x.dataset.k === S.access));
+    } else if (g === 'cn') { S.cnOnly = !S.cnOnly; d.classList.toggle('on'); }
+    else if (g === 'reg') { S.regOnly = !S.regOnly; d.classList.toggle('on'); }
+    else if (g === 'scored') { S.scored = !S.scored; d.classList.toggle('on'); }
+    render();
+  });
+  $('#f-onb').onchange = e => { S.onb = e.target.value; render(); };
+  $('#f-ft').onchange = e => { S.ft = e.target.value; render(); };
+  $('#f-ctx').onchange = e => { S.minCtx = +e.target.value; render(); };
+  $('#f-out').onchange = e => { S.minOut = +e.target.value; render(); };
+  $('#f-q').oninput = e => { S.q = e.target.value.trim().toLowerCase(); render(); };
+  $('#f-reset').onclick = () => {
+    S.scen.clear(); S.chan.clear(); S.access = ''; S.onb = ''; S.ft = '';
+    S.cnOnly = false; S.regOnly = false; S.scored = false; S.minCtx = 0; S.minOut = 0; S.q = '';
+    S.sort = 'capability'; S.dir = -1;
+    /* 只清本筛选区的 chip —— 全局 .chip 会把「每轮调用次数」和巡检类型的高亮一起抹掉，
+       而那两个变量没动，界面从此在说谎 */
+    document.querySelectorAll('#filters .chip').forEach(c => c.classList.remove('on'));
+    $('#f-onb').value = ''; $('#f-ft').value = ''; $('#f-ctx').value = '0';
+    $('#f-out').value = '0'; $('#f-q').value = ''; render();
+  };
+  document.querySelectorAll('#mtbl th.sortable').forEach(th => {
+    th.onclick = () => {
+      const k = th.dataset.k;
+      if (S.sort === k) S.dir = -S.dir; else { S.sort = k; S.dir = (k === 'id' || k === 'channel') ? 1 : -1; }
+      render();
+    };
+  });
+}
+
+function match(m) {
+  if (S.scen.size && ![...S.scen].every(s => (m.usage || []).includes(s))) return false;
+  if (S.chan.size && !S.chan.has(m.channel)) return false;
+  const c = CHMAP[m.channel] || {};
+  if (S.access && c.access !== S.access) return false;
+  if (S.onb && c.onboarding !== S.onb) return false;
+  if (S.ft && m.free_type !== S.ft) return false;
+  if (S.cnOnly && cnOK(m) === false) return false;
+  if (S.regOnly && !isRegistered(m.channel)) return false;
+  if (S.scored && m.score_coding == null && m.score_zh == null) return false;
+  if (S.minCtx && (m.ctx_in || 0) < S.minCtx) return false;
+  if (S.minOut && (m.ctx_out || 0) < S.minOut) return false;
+  if (S.q) {
+    const hay = (m.id + ' ' + (m.display || '') + ' ' + (m.specialty || '') + ' ' + (m.pitfall || '') + ' ' +
+      chName(m.channel) + ' ' + ((VMAP[m.vendor] || {}).name || '')).toLowerCase();
+    if (!hay.includes(S.q)) return false;
+  }
+  return true;
+}
+
+/* ---------- 「综合」排序口径 ----------
+   这套权重按当前选中场景重新加权，且缺评分的项不计入（按已评项归一到 5 分制）。
+   旧版把 score_zh == null 当 0 分用，等于让「我们没评过中文」替模型说了坏话；
+   且不分场景，选「中文写作」和选「编程」出来的是同一份顺序。
+   image / video / other 这三类压根没有能力评分维度，硬凑分数就是假装有依据 → 按渠道推荐度排 */
+const CAP_W = {
+  '':           { coding: 1,   zh: 0.5 },
+  coding:       { coding: 1,   zh: 0.5 },
+  writing:      { coding: 0.5, zh: 1 },
+  longctx:      { coding: 1,   zh: 0.5 },
+  multimodal:   { coding: 1,   zh: 0.5 },
+  image:        null,
+  video:        null,
+  other:        null
+};
+const NO_CAP = ['image', 'video', 'other'];
+
+/* 同选多个场景时以筛选区顺序里最前的那个为准（不是点击顺序）—— 同一组勾选永远得到同一个结果 */
+function scenBasis() {
+  if (!S.scen.size) return '';
+  return M.scenarios.map(s => s.id).find(id => S.scen.has(id)) || '';
+}
+const basisW = () => CAP_W[scenBasis()] || CAP_W[''];
+
+/* 归一到 5 分制；两条评分都缺 → null（不是 0），页面显示「未评」 */
+function capScore(m, w) {
+  if (!w) return null;
+  let num = 0, den = 0;
+  if (m.score_coding != null) { num += w.coding * m.score_coding; den += w.coding; }
+  if (m.score_zh != null) { num += w.zh * m.score_zh; den += w.zh; }
+  return den ? num / den : null;
+}
+
+/* 「5.0」可能是两项齐全，也可能只评了编程 —— 可信度不同，鼠标悬停要能看出来 */
+function capWhy(m, w, cap) {
+  const got = [], miss = [];
+  if (m.score_coding != null) got.push('编程 ' + m.score_coding); else miss.push('编程');
+  if (m.score_zh != null) got.push('中文 ' + m.score_zh); else miss.push('中文');
+  return '综合 ' + cap.toFixed(1) + '：' + got.join('、') +
+    (miss.length ? '；' + miss.join('、') + '未评分，未计入 → 本条排在两项评分齐全的模型之后' : '');
+}
+
+const prioOf = m => {
+  const p = (CHMAP[m.channel] || {}).priority;
+  return p == null ? 999 : p;
+};
+
+/* 评分覆盖几项。语言模型 98 条里只有 30 条两项齐全 —— 「没评过」不能变成排名优势，
+   所以覆盖度排在分数之前：单项 5.0 不许压过双项 4.7 */
+const covOf = m => (m.score_coding != null ? 1 : 0) + (m.score_zh != null ? 1 : 0);
+
+/* 一律按「降序」构造键，最后交给 S.dir。渠道 priority 越小越推荐，所以取负数 */
+function rankKeys(m, sid, w) {
+  const lang = m.is_text ? 1 : 0;
+  const cov = covOf(m);
+  const cs = (capScore(m, w) == null) ? -1 : capScore(m, w);
+  if (NO_CAP.indexOf(sid) >= 0) return [lang, -prioOf(m)];
+  if (sid === 'longctx') return [lang, m.ctx_in || 0, cov, cs, m.ctx_out || 0, -prioOf(m)];
+  if (sid === 'multimodal') return [lang, cov, cs, (m.modal_in || []).length, m.ctx_in || 0, -prioOf(m)];
+  return [lang, cov, cs, m.ctx_in || 0, m.ctx_out || 0, -prioOf(m)];
+}
+function cmpKeys(a, b) {
+  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] - b[i];
+  return 0;
+}
+
+/* 把当前依据写在结果上方 —— 排序口径不该只活在源码里 */
+function sortBasis() {
+  const sid = scenBasis();
+  const name = sid ? (((M.scenarios.find(s => s.id === sid) || {}).name) || sid) : '未选场景';
+  if (NO_CAP.indexOf(sid) >= 0) {
+    return '排序依据：<b>' + name + '</b> · 这类模型没有能力评分维度，按<b>渠道推荐度</b>排（本视图不代表强弱）';
+  }
+  const w = CAP_W[sid] || CAP_W[''];
+  const tail = sid === 'multimodal' ? '，同分比能吃的模态数' : '，同分依次比输入上限 / 输出上限';
+  return '排序依据：<b>' + name + '</b> · 编程×' + w.coding + ' + 中文×' + w.zh +
+    '，缺评分的项不计入（按已评项归一到 5 分制）；' +
+    (sid === 'longctx' ? '先看输入上限，再' : '') +
+    '<b>两项评分齐全的排在只评过一项的之前</b>（标 <sup>单</sup> = 只有一项有分，缺的那项既不代表差也不代表好）' +
+    tail + '，最后比渠道推荐度';
+}
+
+function sortRows(rows) {
+  const k = S.sort;
+  if (k === 'capability') {
+    const sid = scenBasis(), w = CAP_W[sid] || CAP_W[''];
+    return rows.sort((a, b) => cmpKeys(rankKeys(a, sid, w), rankKeys(b, sid, w)) * S.dir);
+  }
+  return rows.sort((a, b) => {
+    let x = a[k], y = b[k];
+    if (k === 'channel') { x = chName(a.channel); y = chName(b.channel); }
+    if (x == null) x = -1; if (y == null) y = -1;
+    if (typeof x === 'string') return x.localeCompare(y) * S.dir;
+    return (x - y) * S.dir;
+  });
+}
+
+/* ---------- 表格 ---------- */
+const openRows = new Set(), picked = new Set();
+
+function render() {
+  const W = basisW(), SID = scenBasis();
+  const rows = sortRows(MODELS.filter(match));
+  $('#count').innerHTML = '匹配 <b>' + rows.length + '</b> / ' + MODELS.length +
+    ' 个模型　<span style="color:var(--fg3)">点行展开部署配置 · 勾选左侧方框可并排对比（最多 4 个）</span>' +
+    (S.sort === 'capability'
+      ? '<br><span style="color:var(--fg3);font-size:12px">' + sortBasis() + '</span>' : '');
+
+  $('#mbody').innerHTML = rows.map(m => {
+    const c = CHMAP[m.channel] || {};
+    const pf = m.pitfall ? '<div class="pf">⚠ ' + md(m.pitfall) + '</div>' : '';
+    const vd = VMAP[m.vendor];
+    const cap = capScore(m, W);
+    const noCap = NO_CAP.indexOf(SID) >= 0;
+    const capBadge = (noCap || cap == null)
+      ? '<span class="ch ' + (m.is_text ? 'api' : 'client') + '" title="' +
+          (noCap ? '这类模型没有能力评分维度，本视图顺序不代表强弱'
+                 : '编程与中文都未评分，未计入排序') + '">' + (m.is_text ? '语' : '图') +
+        '</span> <span style="color:var(--fg3)">未评</span>'
+      : '<span class="ch ' + (m.is_text ? 'api' : 'client') + '" title="' + (m.is_text ? '语言模型' : '图文/多模态模型') +
+          '">' + (m.is_text ? '语' : '图') + '</span> <span class="sc sc' +
+          Math.max(1, Math.min(5, Math.round(cap))) + '" title="' + esc(capWhy(m, W, cap)) + '">' + cap.toFixed(1) +
+          (covOf(m) < 2 ? '<sup>单</sup>' : '') + '</span>';
+    return '<tr class="row' + (picked.has(key(m)) ? ' sel' : '') + '" data-k="' + esc(key(m)) + '">' +
+      '<td class="exp"><input type="checkbox" class="pk" data-k="' + esc(key(m)) + '"' +
+        (picked.has(key(m)) ? ' checked' : '') + ' onclick="event.stopPropagation()"></td>' +
+      '<td>' + capBadge + '</td>' +
+      '<td class="mono">' + (m.display ? '<div class="mname">' + esc(m.display) + '</div>' : '') +
+        esc(m.id) + '<button class="cpb" data-copy="' + esc(m.id) + '" title="复制模型 ID">⧉</button>' +
+        (isExpired(m) ? '<span class="expd" title="官方下架日 ' + esc(m.expiry) + ' 已过，白嫖不到了 —— 待核实撤条">已过期</span>' : '') + '</td>' +
+      '<td><span class="ch ' + esc(c.access || '') + '">' + esc(chName(m.channel)) + '</span></td>' +
+      '<td class="num">' + fmt(m.ctx_in) +
+        (m.ctx_in != null ? '<button class="cpb" data-copy="' + esc(m.ctx_in) + '" title="复制最大输入（原始数字）">⧉</button>' : '') + '</td>' +
+      '<td class="num">' + fmt(m.ctx_out) +
+        (m.ctx_out != null ? '<button class="cpb" data-copy="' + esc(m.ctx_out) + '" title="复制最大输出（原始数字）">⧉</button>' : '') + '</td>' +
+      '<td>' + esc(modals(m.modal_in)) + '</td>' +
+      '<td>' + esc(REASON_CN[m.reasoning] || '—') + '</td>' +
+      '<td>' + scoreCell(m.score_coding) + '</td>' +
+      '<td>' + scoreCell(m.score_zh) + '</td>' +
+      '<td class="spec">' + md(m.specialty) + pf +
+        (vd ? '<div style="color:var(--fg3);font-size:11px;margin-top:2px">' + esc(vd.name) + '</div>' : '') + '</td>' +
+      '<td>' + srcChip(m.source_level) + '</td></tr>' +
+      (openRows.has(key(m)) ? detailRow(m) : '');
+  }).join('') || '<tr><td colspan="12" style="padding:24px;text-align:center;color:var(--fg3)">没有匹配的模型，试试放宽筛选条件</td></tr>';
+
+  document.querySelectorAll('#mbody tr.row').forEach(tr => {
+    tr.onclick = e => {
+      if (e.target.classList.contains('pk')) return;
+      if (e.target.closest && e.target.closest('.cpb')) return;   // 复制按钮只复制，不触发整行展开
+      const k = tr.dataset.k;
+      openRows.has(k) ? openRows.delete(k) : openRows.add(k);
+      render();
+    };
+  });
+  document.querySelectorAll('#mbody .pk').forEach(cb => {
+    cb.onchange = () => {
+      const k = cb.dataset.k;
+      if (cb.checked) { if (picked.size >= 4) { cb.checked = false; alert('最多同时对比 4 个'); return; } picked.add(k); }
+      else picked.delete(k);
+      render(); syncBar();
+    };
+  });
+  const th = document.querySelector('#mtbl th[data-k="' + S.sort + '"]');
+  document.querySelectorAll('#mtbl th.sortable').forEach(x => x.innerHTML = x.innerHTML.replace(/ ▸| ◂/g, ''));
+  if (th) th.innerHTML += S.dir < 0 ? ' ▸' : ' ◂';
+}
+const key = m => m.channel + '::' + m.id;
+
+function detailRow(m) {
+  const c = CHMAP[m.channel] || {};
+  const vd = VMAP[m.vendor];
+  const cfg = 'Base URL    : ' + (c.base_url || '(仅客户端)') +
+    '\nModel ID    : ' + m.id +
+    '\n最大输入    : ' + (m.ctx_in == null ? '（官方未标注，按模型页填）' : m.ctx_in) +
+    '\n最大输出    : ' + (m.ctx_out == null ? '（官方未标注，按模型页填）' : m.ctx_out) +
+    '\nAPI Key     : 从 ' + (c.key_url || '官方控制台') + ' 获取' +
+    (c.base_url_cn ? '\n中国站 URL  : ' + c.base_url_cn : '') +
+    (c.protocols && c.protocols.length > 1 ? '\n协议        : ' + c.protocols.join(' / ') : '');
+  return '<tr class="detail"><td colspan="12"><div class="dgrid">' +
+    '<div><div class="dbox"><h4>部署配置（可直接粘进 WorkBuddy / Claude Code / Zcode 的自定义模型）</h4>' +
+      '<pre class="cfg" id="cfg-' + esc(m.id).replace(/[^\w-]/g, '_') + '">' + esc(cfg) + '</pre>' +
+      '<button class="btn" onclick="cp(this)">复制配置</button></div>' +
+      (m.pitfall ? '<div class="warnline">⚠ ' + md(m.pitfall) + '</div>' : '') +
+      (c.rate_limit_note ? '<div class="warnline" style="background:var(--accent-bg);color:var(--accent)">' +
+        '渠道限额：' + md(c.rate_limit_note) + '</div>' : '') + '</div>' +
+    '<div><div class="dbox"><h4>完整字段</h4>' +
+      kv('渠道', chName(m.channel)) +
+      kv('厂商', vd ? vd.name + '（' + vd.origin + '）' : '—') +
+      kv('调用方式', ACC_CN[c.access] || '—') +
+      kv('注册门槛', esc(onbName(c.onboarding)) + ' — ' + md(c.onboarding_note)) +
+      kv('免费类型', FT_CN[m.free_type] || '—') +
+      kv('失效日期', m.expiry ? '<b style="color:var(--bad)">' + esc(m.expiry) + '</b>' +
+        (isExpired(m) ? ' <span class="expd">已过期，白嫖不到了，待核实撤条</span>' : '') : '未公布') +
+      kv('中国可用', cnOK(m) === null ? '<span style="color:var(--fg3)">未核实</span>'
+        : (cnOK(m) ? '是' : '<b style="color:var(--bad)">否</b>') +
+          (cnInherited(m) ? '<span style="color:var(--fg3)" title="' +
+            esc((CHMAP[m.channel] || {}).available_cn_src || '') + '">（渠道默认值，非该模型实测）</span>' : '')) +
+      kv('工具调用', m.tools === true ? '支持' : m.tools === false ? '不支持' : '未核实') +
+      kv('结构化输出', m.structured === true ? '支持' : m.structured === false ? '不支持' : '未核实') +
+      kv('输入模态', modals(m.modal_in)) +
+      kv('输出模态', modals(m.modal_out)) +
+      kv('核实日期', esc(m.verified_at)) +
+      kv('来源类型', esc(m.source_level) + ' ' + esc((M.source_levels[m.source_level] || {}).name || '')) +
+      (m.neurons_in ? kv('Neurons 单价', m.neurons_in + ' / M 输入 · ' + m.neurons_out + ' / M 输出') : '') +
+      (m.est_req_per_day ? kv('≈ 每天可跑', m.est_req_per_day + ' 次（按 10,000 Neurons/天 折算）') : '') +
+      (m.tier ? kv('魔粒档位', md(m.tier)) : '') +
+      (m.pool ? kv('积分池', md(m.pool)) : '') +
+    '</div></div></div></td></tr>';
+}
+function kv(k, v) { return '<div class="kv"><span>' + k + '</span><span>' + v + '</span></div>'; }
+
+function cp(btn) {
+  const pre = btn.previousElementSibling;
+  const t = pre.textContent;
+  const ta = document.createElement('textarea');
+  ta.value = t; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); btn.textContent = '已复制'; setTimeout(() => btn.textContent = '复制配置', 1500); }
+  catch (e) { alert('复制失败，请手动选中'); }
+  document.body.removeChild(ta);
+}
+
+/* ---------- 对比 ---------- */
+function syncBar() {
+  const bar = $('#cbar');
+  if (!picked.size) {
+    $('#citems').innerHTML = '';   // 只隐藏不清空会把残项留在 DOM 里
+    bar.classList.remove('on');
+    return;
+  }
+  bar.classList.add('on');
+  $('#citems').innerHTML = [...picked].map(k => {
+    const [ch, ...rest] = k.split('::');
+    return '<div class="ci"><b>' + esc(rest.join('::')) + '</b><span data-unpk="' +
+      esc(k) + '">×</span></div>';
+  }).join('');
+}
+function unpk(k) {
+  picked.delete(k); openRows.delete(k); render(); syncBar();
+}
+/* 用委托而不是内联 onclick：模型 ID 是数据里的自由文本，拼进 JS 字符串字面量迟早被引号逃出 */
+document.addEventListener('click', e => {
+  const t = e.target.closest && e.target.closest('[data-unpk]');
+  if (t) unpk(t.getAttribute('data-unpk'));
+});
+$('#clrcmp').onclick = () => { picked.clear(); render(); syncBar(); };
+$('#docmp').onclick = () => {
+  const ms = MODELS.filter(m => picked.has(key(m)));
+  if (ms.length < 2) { alert('至少选 2 个'); return; }
+  const fields = [
+    ['渠道', m => chName(m.channel)],
+    ['调用方式', m => ACC_CN[(CHMAP[m.channel] || {}).access] || '—'],
+    ['注册门槛', m => onbName((CHMAP[m.channel] || {}).onboarding)],
+    ['免费类型', m => FT_CN[m.free_type] || '—'],
+    ['输入上限', m => fmt(m.ctx_in)],
+    ['输出上限', m => fmt(m.ctx_out)],
+    ['输入模态', m => modals(m.modal_in)],
+    ['思考', m => REASON_CN[m.reasoning] || '—'],
+    ['工具调用', m => m.tools === true ? '✓' : m.tools === false ? '✗' : '—'],
+    ['编程评分', m => m.score_coding == null ? '—' : m.score_coding],
+    ['中文评分', m => m.score_zh == null ? '—' : m.score_zh],
+    ['失效日期', m => m.expiry || '未公布'],
+    ['中国可用', m => cnOK(m) === null ? '?' : cnOK(m) ? '✓' : '✗'],
+    ['厂商', m => (VMAP[m.vendor] || {}).name || '—'],
+    ['核实日期', m => m.verified_at],
+  ];
+  let h = '<h2>并排对比</h2><div class="tblwrap"><table><thead><tr><th style="min-width:110px">字段</th>' +
+    ms.map(m => '<th>' + esc(m.id) + '</th>').join('') + '</tr></thead><tbody>';
+  fields.forEach(([label, fn]) => {
+    h += '<tr><td style="color:var(--fg3);font-size:12px">' + label + '</td>' +
+      ms.map(m => '<td>' + esc(fn(m)) + '</td>').join('') + '</tr>';
+  });
+  h += '<tr><td style="color:var(--fg3);font-size:12px">专长</td>' +
+    ms.map(m => '<td class="spec">' + (md(m.specialty) || '—') + '</td>').join('') + '</tr>';
+  h += '<tr><td style="color:var(--fg3);font-size:12px">注意</td>' +
+    ms.map(m => '<td class="pf">' + (md(m.pitfall) || '—') + '</td>').join('') + '</tr>';
+  h += '</tbody></table></div>';
+  $('#mcontent').innerHTML = h; $('#modal').classList.add('on');
+};
+$('#mclose').onclick = () => $('#modal').classList.remove('on');
+$('#modal').onclick = e => { if (e.target.id === 'modal') $('#modal').classList.remove('on'); };
+
+/* ---------- 渠道 ---------- */
+function renderChannels() {
+  $('#chancards').innerHTML = CH.slice().sort((a, b) => a.priority - b.priority).map(c => {
+    const ms = MODELS.filter(m => m.channel === c.id);
+    const best = ms.slice().sort((x, y) => (y.score_coding || 0) - (x.score_coding || 0))[0];
+    const ex = isExcluded(c.id);
+    return '<div class="card"' + (ex ? ' style="opacity:.5"' : '') + '><h3><span class="rank">#' + c.priority + '</span>' + esc(c.name) +
+      '<span class="ch ' + esc(c.access) + '">' + esc(ACC_CN[c.access] || '接入方式未登记') + '</span>' +
+      (ex ? '<span class="ch" style="background:var(--warn-bg);color:var(--warn)">已排除</span>' : '') + '</h3>' +
+      '<div style="font-size:12px;color:var(--fg3);margin-bottom:6px">' + esc(c.full_name) + '</div>' +
+      '<div class="txt"><b>门槛</b>：' + esc(onbName(c.onboarding)) + ' — ' + md(c.onboarding_note) + '</div>' +
+      '<div class="txt"><b>限额</b>：' + md(c.rate_limit) + '</div>' +
+      '<div class="txt"><b>免费模型</b>：' + c.free_model_count + ' 个（本表收录 ' + ms.length + '）</div>' +
+      '<div class="txt"><b>Base URL</b>：<code>' + esc(c.base_url) + '</code></div>' +
+      (c.base_url_cn ? '<div class="txt"><b>中国站</b>：<code>' + esc(c.base_url_cn) + '</code></div>' : '') +
+      '<div class="txt"><b>协议</b>：' + c.protocols.join(' / ') + '</div>' +
+      (best ? '<div class="txt"><b>本渠道编程首选</b>：<code>' + esc(best.id) + '</code></div>' : '') +
+      '<div class="txt"><b>适合</b>：' + md(c.best_for) + '</div>' +
+      '<ul><li>Key 获取：<a href="' + esc(c.key_url) + '" target="_blank">' + esc(c.key_url) + '</a></li></ul>' +
+      '<div class="notes">' + md(c.notes) + '</div>' +
+      '<div style="margin-top:8px;font-size:11px;color:var(--fg3)">核实于 ' + c.verified_at + ' ' +
+        srcChip(c.source_level) + '</div></div>';
+  }).join('');
+}
+
+/* ---------- 政策变化 ---------- */
+function renderChanges() {
+  const cs = P.changes.slice().sort((a, b) => (b.sort || '').localeCompare(a.sort || ''));
+  $('#tllist').innerHTML = cs.map(c =>
+    '<div class="tli"><div class="tld">' + esc(c.date) + ' · ' + esc(chName(c.channel)) +
+      '<span class="tagd ' + esc(c.type) + '">' + esc(c.type) + '</span>' + srcChip(c.source_level) + '</div>' +
+      '<div class="tlc">' + md(c.content) + '</div></div>').join('');
+}
+
+/* ---------- 优惠情报（纯文本，不参与收录与计数） ---------- */
+function renderPromos() {
+  const ps = (P.promos || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  $('#promolist').innerHTML = ps.length ? ps.map(p =>
+    '<div class="tli"><div class="tld">' + esc(p.date) + ' · ' + esc(chName(p.channel)) + srcChip(p.source_level) + '</div>' +
+    '<div class="tlc">' + md(p.text) + '</div>' +
+    (p.source_url ? '<div class="meta" style="margin-top:4px">出处：' +
+      String(p.source_url).split(' ; ').map(u =>
+        '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(u) + '</a>').join('、') +
+      '</div>' : '') + '</div>').join('')
+    : '<p class="hint">本轮没有待记的优惠情报。</p>';
+}
+
+function renderVendors() {
+  $('#vlist').innerHTML = P.vendors.map(v => {
+    const ms = MODELS.filter(m => m.vendor === v.id);
+    return '<div class="vendor"><h3>' + esc(v.name) + '</h3>' +
+      '<div class="org">' + esc(v.origin) + ' · 本表收录 ' + ms.length + ' 个免费模型</div>' +
+      '<p>' + md(v.intro) + '</p>' +
+      (v.benchmark ? '<p><b>官方跑分</b>：' + md(v.benchmark) + '</p>' : '') +
+      '<p><b>本次免费的是</b>：' + md(v.free_note) + '</p>' +
+      (ms.length ? '<p style="font-size:12px;color:var(--fg3)">模型：' +
+        ms.slice(0, 12).map(m => '<code>' + esc(m.id) + '</code>').join('、') +
+        (ms.length > 12 ? ' 等 ' + ms.length + ' 个' : '') + '</p>' : '') +
+      '<div class="verdict">' + md(v.verdict) + '</div></div>';
+  }).join('');
+}
+
+/* ---------- 未证实 ---------- */
+function renderUnverified() {
+  $('#uvlist').innerHTML = '<p style="color:var(--fg2);font-size:13px;margin-top:0">' +
+    '以下条目<b>官方没有给出明确答案</b>。本报告宁可留白也不编造——把它们当成「需要你自己确认」的清单。</p>' +
+    P.unverified.map(u => '<div class="uv"><span class="n">' + esc(u.id) + '</span>' +
+      '<span style="flex:1">' + md(u.text) + '</span>' +
+      '<span class="ch" style="height:fit-content">' + esc(chName(u.channel)) + '</span>' +
+      srcChip(u.source_level) + '</div>').join('');
+}
+
+/* ---------- 本地记账（只存在本地浏览器，不进 JSON、不上传） ---------- */
+const LS_KEY = 'free-llm-nav-v1';
+let LS = {};
+try { LS = JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { LS = {}; }
+LS.reg = LS.reg || {};          // 渠道 -> true 已注册
+LS.quota = LS.quota || {};      // 渠道 -> 今日剩余（手填）
+LS.hits = LS.hits || {};        // 渠道 -> 上次撞墙时间
+LS.exclude = LS.exclude || {};  // 渠道 -> true 已排除（手动开关，不过期）
+const saveLS = () => { try { localStorage.setItem(LS_KEY, JSON.stringify(LS)); } catch (e) {} };
+const isRegistered = id => LS.reg[id] === true;
+/* 「暂时排除」：某家最近卡/抽风时手动拉黑，全站推荐不再出现。手动开关，不会自动恢复 */
+const isExcluded = id => LS.exclude[id] === true;
+const excludedIds = () => CH.filter(c => isExcluded(c.id));
+const wipeExclude = () => { LS.exclude = {}; saveLS(); };
+
+/* ---------- 常用备忘：随手记的东西，只存在本地浏览器，不进 JSON、不参与构建 ---------- */
+LS.notes = LS.notes || [];   // [{id, title, body, updated}]
+let noteTS = null;
+
+const noteStamp = () => {
+  const d = new Date(), p = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+    + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+};
+const noteId = () => 'n' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36);
+
+function noteText(n) {
+  return (n.title ? n.title + '\n' : '') + (n.body || '');
+}
+/* 通用复制：优先 execCommand（file:// 下更稳），失败退回 navigator.clipboard */
+function copyText(text, btn, restore) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;left:-9999px';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  if (!ok && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {}, () => {}); ok = true;
+  }
+  document.body.removeChild(ta);
+  if (btn) {
+    const old = btn.textContent;
+    btn.textContent = ok ? '已复制 ✓' : '复制失败，请 Ctrl+C';
+    setTimeout(() => { btn.textContent = old; }, 2000);
+  }
+  return ok;
+}
+
+/* 页面上任何带 data-copy 的元素都能点一下复制（模型 ID / 别名）。
+   用全局委托：视图重绘后不用重新绑定 */
+document.addEventListener('click', e => {
+  const el = e.target.closest && e.target.closest('[data-copy]');
+  if (!el) return;
+  const html = el.innerHTML;
+  const mini = el.classList.contains('cpb');   // 表格小按钮只换个勾，避免把列撑宽
+  el.title = '点一下复制：' + el.dataset.copy;
+  const ok = copyText(el.dataset.copy, null);
+  if (mini) {
+    el.innerHTML = ok ? '✓' : '×'; el.classList.add(ok ? 'ok' : 'bad');
+    setTimeout(() => { el.innerHTML = html; el.classList.remove('ok', 'bad'); }, 1200);
+  } else {
+    el.innerHTML = ok ? '<b style="color:var(--ok)">已复制 ✓</b>' : '<b style="color:var(--bad)">复制失败</b>';
+    setTimeout(() => { el.innerHTML = html; }, 1200);
+  }
+});
+
+function renderNotes() {
+  const box = $('#notelist'), saved = $('#note-saved');
+  if (!box) return;
+  const list = LS.notes || [];
+  if (saved) saved.textContent = list.length
+    ? '已存 ' + list.length + ' 条 · 保存在本地浏览器，不参与构建、不进 JSON'
+    : '还没有备忘 · 用上面的输入框新增一条';
+  if (!list.length) { box.innerHTML = ''; return; }
+  box.innerHTML = list.map(n =>
+    '<div class="note" data-id="' + esc(n.id) + '">' +
+      '<input class="title" type="text" data-f="title" value="' + esc(n.title) + '" placeholder="标题">' +
+      '<textarea data-f="body" placeholder="内容…">' + esc(n.body) + '</textarea>' +
+      '<div class="notefoot">' +
+        '<span class="ts">更新于 ' + esc(n.updated || '—') + '</span>' +
+        '<span class="act">' +
+          '<button class="btn ghost" data-act="copy">复制</button>' +
+          '<button class="btn del" data-act="del">删除</button>' +
+        '</span>' +
+      '</div>' +
+    '</div>').join('');
+  box.querySelectorAll('.note').forEach(el => {
+    const id = el.dataset.id;
+    el.querySelectorAll('[data-f]').forEach(inp => {
+      inp.oninput = () => {
+        const n = list.find(x => x.id === id);
+        if (!n) return;
+        n[inp.dataset.f] = inp.value;
+        n.updated = noteStamp();
+        saveLS();
+        const ts = el.querySelector('.ts');
+        if (ts) ts.textContent = '已自动保存 ' + n.updated;
+      };
+    });
+    const n0 = list.find(x => x.id === id);
+    el.querySelector('[data-act=copy]').onclick = () => copyText(noteText(n0), null);
+    el.querySelector('[data-act=del]').onclick = () => {
+      const n = list.find(x => x.id === id);
+      if (!n) return;
+      if (!confirm('删除「' + (n.title || '(无标题)') + '」？这条只能在本页恢复，删了就没了。')) return;
+      LS.notes = LS.notes.filter(x => x.id !== id);
+      saveLS(); renderNotes();
+    };
+  });
+}
+
+/* ---------- 跨渠道匹配：同一模型多家都有时打 ⚡ 徽标 ----------
+   双层规则：
+   1) 名字归一：小写 + 去 :free 后缀 + 取最后一段
+      （glm-5.2 / ZhipuAI/GLM-5.2 / z-ai/glm-5.2:free → 同组）
+   2) vendor 兜底：组里只有 1 条、但它同厂商的其他模型已在别的渠道出现，且它名字带该厂商
+      已知命名空间的 → 并入组（例：魔搭的 ZhipuAI/GLM-5.2 靠 zhipu 的命名空间 ZhipuAI 对上）
+   组内跨渠道 ≥2 家才标 ⚡。误判方向只会多标不会漏标，宁滥勿缺的代价小 */
+/* vendor → 模型命名空间（该厂商 id 在各渠道出现的命名空间前缀，zhipu → ZhipuAI / z-ai / zai）
+   手写映射：vendor id 和模型命名空间经常不是一个词，靠自动推导会漏。
+   只有「前缀确实不同」的厂商需要映射；命名空间恰好 = vendor id 的（qwen / google / nvidia /
+   mistralai / openai）不需要列，兜底会跳过它们（它们几乎都在名字归一层就匹配上了） */
+const VENDOR_NS = {
+  zhipu: ['zhipuai', 'z-ai'], stepfun: ['stepfun-ai'], meituan: ['meituan-longcat'],
+  deepseek: ['deepseek-ai'], moonshot: ['moonshotai']
+};
+const inVendorNs = (id, v) => {
+  if (!VENDOR_NS[v]) return false;
+  const parts = String(id).toLowerCase().split('/').filter(Boolean);
+  const pref = VENDOR_NS[v];
+  return parts.some(p => pref.some(x => p === x || p.startsWith(x + '-') || p.startsWith(x + '.')));
+};
+const modelGroupOf = m => m.id.toLowerCase().replace(/:free$/, '').split('/').pop();
+const XCHAN = (() => {
+  const g = {};
+  MODELS.forEach(m => (g[modelGroupOf(m)] = g[modelGroupOf(m)] || []).push(m));
+  /* vendor 兜底：单渠道组、模型 id 带其 vendor 的命名空间前缀、且同 vendor 在别家渠道
+     也有带该前缀的模型 → 两边并组（例：魔搭 ZhipuAI/GLM-5.2 ↔ OpenRouter z-ai/glm-5.2:free） */
+  Object.keys(g).forEach(k => {
+    const arr = g[k];
+    if (new Set(arr.map(m => m.channel)).size > 1) return;
+    const m0 = arr[0];
+    const v = m0.vendor;
+    if (!inVendorNs(m0.id, v)) return;
+    const pref = VENDOR_NS[v];
+    /* 归一化：剥离厂商命名空间前缀（按词/连字符边界）→ 比较归一化名。
+       例：deepseek-ai/deepseek-r1-distill-qwen-32b → distill-qwen-32b
+            deepseek-ai/DeepSeek-V4-Pro → v4-pro
+            nvidia/nemotron-3.5-lightning → 3.5-lightning
+            nvidia/nemotron-3.5-lightning-30b-a3b → 3.5-lightning-30b-a3b（不同名，拒绝并组）
+       前缀不同就拒绝并组，避免同厂商不同代次模型被误并进 */
+    const stripPref = s => {
+      let t = s.toLowerCase();
+      pref.forEach(x => {
+        const i = t.indexOf(x);
+        if (i === 0) {
+          const rest = t.slice(x.length);
+          t = (rest === '' || rest[0] === '-' || rest[0] === '.') ? rest : t;
+        }
+      });
+      return t;
+    };
+    const norm = s => stripPref(modelGroupOf(s)).replace(/\.+/g, '');
+    const target = norm(m0);
+    MODELS.forEach(m => {
+      if (m.channel === m0.channel || !inVendorNs(m.id, v)) return;
+      if (norm(m) !== target) return;
+      g[k].push(m);
+    });
+  });
+  const map = {};
+  MODELS.forEach(m => {
+    const k = modelGroupOf(m);
+    const chans = [...new Set(g[k].map(x => x.channel))];
+    map[m.channel + '::' + m.id] = chans.length > 1 ? {
+      n: chans.length,
+      items: g[k].filter(x => x.channel !== m.channel)
+        .map(x => ({ name: (CHMAP[x.channel] || {}).name || x.channel, id: x.id }))
+    } : null;
+  });
+  return map;
+})();
+const SCOPES = M.limit_scopes || {}, RESETS = M.quota_resets || {};
+
+function quotaLine(c) {
+  const ls = SCOPES[c.limit_scope], qr = RESETS[c.quota_reset];
+  let s = '<div class="chainmeta"><span class="k">限额作用域 </span>' + esc(ls ? ls.name : (c.limit_scope || '—'));
+  if (ls && ls.warn) s += ' —— ' + esc(ls.desc);
+  s += '<br><span class="k">额度恢复 </span>' + esc(qr ? qr.name : (c.quota_reset || '—'));
+  if (qr) s += ' —— ' + esc(qr.desc);
+  s += '</div>';
+  return s;
+}
+
+/* 排除状态一变，受影响的视图全部重绘 */
+function renderAll() {
+  renderCross(); renderEstimator(); renderExport(); renderChannels();
+}
+
+/* ---------- 跨渠道对照：换渠道不换模型 ---------- */
+function renderCross() {
+  const g = {};
+  MODELS.forEach(m => {
+    if (isExcluded(m.channel)) return;
+    const x = XCHAN[m.channel + '::' + m.id];
+    if (!x) return;                      /* 只列 ≥2 渠道的模型（含 vendor 兜底并组的） */
+    const k = modelGroupOf(m);
+    (g[k] = g[k] || []).push(m);
+  });
+  /* 去重：同一渠道只展示一次（vendor 兜底把多个同组模型拉进来时可能重复） */
+  Object.keys(g).forEach(k => {
+    const seen = new Set();
+    g[k] = g[k].filter(m => { if (seen.has(m.channel + '::' + m.id)) return false; seen.add(m.channel + '::' + m.id); return true; });
+  });
+  const sumOf = m => (m.score_coding == null ? 0 : m.score_coding) +
+    (m.score_zh == null ? 0 : m.score_zh);
+  const covOf2 = m => (m.score_coding != null ? 1 : 0) + (m.score_zh != null ? 1 : 0);
+  /* 组内取已评项最全、之和最大的那份当组总分 —— 同模型跨渠道的分已由 build 自检保证一致，
+     这里只是兜底防漏网。口径（2026-09-24 本项目已定）：编程+中文之和 > 5 才列，按之和降序 */
+  const groups = Object.keys(g).map(k => g[k])
+    .filter(a => new Set(a.map(m => m.channel)).size > 1)
+    .map(a => ({ a: a, s: Math.max.apply(null, a.map(sumOf)),
+                 c: Math.max.apply(null, a.map(covOf2)) }))
+    .filter(o => o.s > 5)
+    .sort((x, y) => y.s - x.s || y.a.length - x.a.length ||
+      modelGroupOf(x.a[0]).localeCompare(modelGroupOf(y.a[0])));
+  const box = $('#xclist');
+  if (!groups.length) {
+    box.innerHTML = '<p class="hint">当前数据里没有「同一模型出现在两个以上渠道」的条目。</p>';
+    return;
+  }
+  box.innerHTML = '<div class="count">共 <b>' + groups.length + '</b> 组 · 只列<b>编程+中文之和 &gt; 5</b> 的模型，按这个之和降序（满分 10 · 只评过一项的按单项计，标 <sup>单</sup>）' +
+    '<br><span style="color:var(--fg3)">同名不同渠道的算一组；只有一处登记但同厂商在别家有同款的，也并进来（宁多标不漏标）。' +
+    '输出上限差 ≥2 倍会特别提醒 —— 同名模型不同网关规格能差 4~7 倍。' +
+    '<b>点模型 ID 或数字旁的 ⧉ 一下即复制</b>（复制的是原始数字，不带千分位），可直接粘进客户端配置。</span></div>' +
+    groups.map(o => {
+    const a = o.a;
+    const outs = a.map(m => m.ctx_out).filter(v => v != null);
+    let delta = '';
+    if (outs.length > 1) {
+      const mx = Math.max.apply(null, outs), mn = Math.min.apply(null, outs);
+      if (mn > 0 && mx / mn >= 2) {
+        delta = '<div class="chainmeta">输出上限相差 <b>' + (mx / mn).toFixed(1) + ' 倍</b>（' +
+          mn.toLocaleString('en-US') + ' → ' + mx.toLocaleString('en-US') +
+          '）—— 同样的活，在一边要切好几段，另一边一次跑完</div>';
+      }
+    }
+    return '<div class="xc"><h4>' + esc(modelGroupOf(a[0])) +
+      ' <span class="ch" style="background:var(--warn-bg);color:var(--warn)">⚡ ' +
+      new Set(a.map(m => m.channel)).size + ' 家</span>' +
+      ' <span class="ch" style="background:var(--accent-bg);color:var(--accent)" title="编程+已评项之和（满分 10）">总 ' + o.s +
+      (o.c < 2 ? '<sup>单</sup>' : '') + '</span></h4><div class="xrow">' +
+      a.map(m => {
+        const c = CHMAP[m.channel] || {};
+        const numBtn = v => v == null ? '' :
+          '<button class="cpb" data-copy="' + esc(v) + '" title="复制原始数字">⧉</button>';
+        return '<div class="xcell"><div class="h">' + esc(c.name) + '</div>' +
+          /* 模型 ID 做成可点复制：这一页本来就是「换渠道不换模型」时抄 ID 用的 */
+          '<div class="v xchip" data-copy="' + esc(m.id) + '">' + esc(m.id) + '<b> ⧉</b></div>' +
+          '<div class="chainmeta"><span class="k">入 </span>' + fmt(m.ctx_in) + numBtn(m.ctx_in) +
+          '　<span class="k">出 </span>' + fmt(m.ctx_out) + numBtn(m.ctx_out) +
+          '　<span class="k">编程 </span>' + (m.score_coding == null ? '—' : m.score_coding) +
+          '　<span class="k">中文 </span>' + (m.score_zh == null ? '—' : m.score_zh) +
+          '　<span class="k">总分 </span>' + sumOf(m) + (covOf2(m) < 2 ? '<sup>单</sup>' : '') +
+          '</div></div>';
+      }).join('') + '</div>' + delta + '</div>';
+  }).join('');
+}
+
+/* ---------- 当前可用性（探针结果，Key 只在本地） ---------- */
+function renderProbe() {
+  const box = $('#probelist');
+  const pb = P.probe;
+  if (!pb || !pb.results) {
+    box.innerHTML = '<p class="hint">还没跑过探针。在本地执行 <code>python tools/probe.py</code> —— '
+      + '它会提示你录入各渠道的 Key（只写进 <code>data/.keys.local.json</code>，已 gitignore，这个页面读不到），'
+      + '跑完再执行 <code>python tools/build.py</code> 刷新本页即可。</p>';
+    return;
+  }
+  const byId = {}, skp = {};
+  (pb.results || []).forEach(r => { byId[r.channel] = r; });
+  (pb.skipped || []).forEach(s => { skp[s.channel] = s; });
+  const ok = (pb.results || []).filter(r => r.ok).length;
+
+  let h = '<div class="count">探测于 <b>' + esc(pb.probed_at || '—') + '</b> · 可用 <b>' + ok +
+    '</b> · 不通 ' + ((pb.results || []).length - ok) + ' · 跳过 ' + (pb.skipped || []).length +
+    '<br><span style="color:var(--fg3)">探针只发一个 max_tokens=1 的最小请求，记录通断与延迟，不记录任何 Key。</span></div>';
+
+  CH.slice().sort((a, b) => a.priority - b.priority).forEach(c => {
+    const r = byId[c.id], s = skp[c.id];
+    const st = r ? (r.ok ? { t: '通', bg: 'var(--ok)' } : { t: '断', bg: 'var(--bad)' })
+                 : { t: '—', bg: 'var(--fg3)' };
+    h += '<div class="chainitem' + (r && !r.ok ? ' next' : (!r ? ' last' : '')) + '">' +
+      '<div class="chainhd"><span class="chainno" style="background:' + st.bg + '">' + st.t + '</span>' +
+      '<span class="ch ' + esc(c.access || '') + '">' + esc(c.name) + '</span>' +
+      '<span class="chainmeta" style="margin:0">' +
+        (r ? (r.latency_ms == null ? '—' : r.latency_ms + ' ms') : '未探测') +
+        (r && r.http ? ' · HTTP ' + r.http : '') + '</span></div>' +
+      (r && r.model ? '<div class="chainmeta"><span class="k">探针模型 </span>' + esc(r.model) + '</div>' : '') +
+      (r && r.error ? '<div class="chainwarn">⚠ ' + esc(r.error) + '</div>' : '') +
+      (s ? '<div class="chainmeta"><span class="k">跳过原因 </span>' + esc(s.reason) + '</div>' : '') +
+      (r && r.ok ? quotaLine(c) : '') +
+      '</div>';
+  });
+  box.innerHTML = h;
+}
+
+/* ---------- 接入配置：New API 渠道导出 + 本地记账 ---------- */
+let EXP_ORDER = 'rec', EXP_CHAN = '';
+
+/* New API 的 base_url 不能带 /v1，它自己会追加；现有数据里全是带 /v1 的 */
+const naBase = u => String(u || '').replace(/\/v1\/?$/, '');
+
+/* priority 决定 New API 的失败重试顺序：数字大的先试。
+   排序依据在页面上选，默认按渠道内置推荐度（channels.json 的 priority，越小越推荐） */
+const ORDERS = [
+  { id: 'rec', name: '渠道推荐度（默认）' },
+  { id: 'ctx', name: '最强模型输出上限' },
+  { id: 'coding', name: '最强模型编程评分' },
+  { id: 'none', name: '不排（全部 priority=0）' }
+];
+function orderScore(c) {
+  const ms = MODELS.filter(m => m.channel === c.id && m.is_text !== false);
+  if (EXP_ORDER === 'ctx') return Math.max.apply(null, ms.map(m => m.ctx_out || 0).concat([0]));
+  if (EXP_ORDER === 'coding') return Math.max.apply(null, ms.map(m => m.score_coding || 0).concat([0]));
+  return -(c.priority == null ? 9999 : c.priority);
+}
+function naPriority(cid) {
+  if (EXP_ORDER === 'none') return 0;
+  const usable = CH.filter(c => (c.newapi || {}).supported && !isExcluded(c.id));
+  const ranked = usable.slice().sort((a, b) => orderScore(b) - orderScore(a));
+  const i = ranked.findIndex(c => c.id === cid);
+  return i >= 0 ? (ranked.length - i) * 10 : 0;
+}
+
+function chanModels(cid) {
+  return MODELS.filter(m => m.channel === cid).map(m => m.id).join(',');
+}
+
+function naChannel(c) {
+  const ms = MODELS.filter(m => m.channel === c.id);
+  const test = (ms.filter(m => m.is_text !== false)[0] || ms[0] || {}).id;
+  return {
+    name: c.name, type: (c.newapi || {}).type || 8,
+    key: '<在这里填 ' + c.name + ' 的 Key，多 Key 用换行分隔>',
+    base_url: naBase(c.base_url),
+    models: chanModels(c.id),
+    group: 'default', status: 1,
+    priority: naPriority(c.id), weight: 0,
+    auto_ban: 0, tag: '免费渠道', test_model: test || ''
+  };
+}
+
+function renderExport() {
+  const so = $('#exp-order');
+  if (so.dataset.built !== '1') {
+    so.innerHTML = ORDERS.map(o =>
+      '<option value="' + esc(o.id) + '">' + esc(o.name) + '</option>').join('');
+    so.dataset.built = '1';
+    so.onchange = () => { EXP_ORDER = so.value; renderExport(); };
+  }
+  so.value = EXP_ORDER;
+  const orderName = (ORDERS.filter(o => o.id === EXP_ORDER)[0] || {}).name || '';
+
+  const cs = $('#exp-chan');
+  /* 排除掉的渠道不导出。下拉每次重绘 —— 原来只建一次，排除状态变了下拉不跟着变 */
+  const usable = CH.filter(c => (c.newapi || {}).supported && !isExcluded(c.id));
+  cs.innerHTML = '<option value="">全部渠道（批量 JSON）</option>' +
+    usable.map(c => '<option value="' + esc(c.id) + '">' + esc(c.name) + '</option>').join('');
+  cs.onchange = () => { EXP_CHAN = cs.value; renderExport(); };
+  if (EXP_CHAN && !usable.some(c => c.id === EXP_CHAN)) EXP_CHAN = '';
+  cs.value = EXP_CHAN;
+
+  let h = '';
+  const nEx = excludedIds().filter(c => (c.newapi || {}).supported).length;
+  if (!EXP_CHAN) {
+    const arr = usable.map(naChannel);
+    h += '<p class="hint">下面是 <b>' + arr.length + '</b> 条渠道的完整数组。复制到 New API 控制台逐条添加，'
+      + '或用 <code>POST /api/channel/</code> 批量导入（需要 <code>{"mode":"single","channel":{…}}</code> 包装）。'
+      + '<b>priority 已按「' + esc(orderName) + '」排好</b>，'
+      + '排第一的最高，撞墙后 New API 会自动重试下一个渠道。</p>';
+    if (nEx) h += '<p class="hint">另有 <b>' + nEx + '</b> 家你已排除，未包含在本次导出中。</p>';
+    h += '<div class="dbox"><h4>channels（JSON）</h4><pre class="cfg" id="expall">' +
+      esc(JSON.stringify(arr, null, 2)) + '</pre>' +
+      '<button class="btn" onclick="cp(this)">复制全部</button></div>';
+  } else {
+    const c = CH.filter(x => x.id === EXP_CHAN)[0];
+    const o = naChannel(c);
+    h += '<div class="dbox"><h4>' + esc(c.name) + ' —— New API 渠道字段</h4>' +
+      '<pre class="cfg">' + esc(JSON.stringify(o, null, 2)) + '</pre>' +
+      '<button class="btn" onclick="cp(this)">复制</button>' +
+      (c.newapi && c.newapi.note ? '<div class="warnline">⚠ ' + md(c.newapi.note) + '</div>' : '') +
+      '<div class="chainmeta"><span class="k">base_url </span>已自动去掉 <code>/v1</code> 后缀 —— '
+      + 'New API 会自己追加，带上去反而 404</div>' +
+      '<div class="chainmeta"><span class="k">auto_ban=0 </span>免费渠道 429 是常态，'
+      + '开着自动禁用会让渠道动不动就被踢掉</div>' +
+      ((c.limit_scope === 'key')
+        ? '<div class="chainwarn">⚠ 这家限额按密钥类型共享，<b>多填几个 Key 不会叠加额度</b>，别白费劲</div>'
+        : '') +
+      '</div>';
+  }
+
+  h += '<div class="count" style="margin-top:20px">本地记账 <b>' + CH.length + '</b> 个渠道' +
+    '<br><span style="color:var(--fg3)">只存在你浏览器（localStorage），不进 JSON、不上传、也不会进导出的配置。'
+    + '换浏览器或换电脑会丢，可以点「导出记账」备份。</span></div>';
+
+  h += CH.slice().sort((a, b) => a.priority - b.priority).map(c => {
+    const reg = isRegistered(c.id);
+    const q = LS.quota[c.id] || '', hit = LS.hits[c.id] || '', ex = isExcluded(c.id);
+    return '<div class="chainitem' + (ex ? ' last' : (reg ? '' : ' last')) + '"' +
+      (ex ? ' style="opacity:.55"' : '') + '><div class="chainhd">' +
+      '<span class="ch ' + esc(c.access || '') + '">' + esc(c.name) + '</span>' +
+      (reg ? '<span class="ch api">已注册</span>' : '<span class="ch">未注册</span>') +
+      (hit ? '<span class="ch" style="background:var(--bad-bg);color:var(--bad)">上次撞墙 ' + esc(hit) + '</span>' : '') +
+      (ex ? '<span class="ch" style="background:var(--warn-bg);color:var(--warn)">已排除 · 不参与推荐</span>' : '') +
+      '</div>' +
+      '<div class="frow" style="margin-top:8px">' +
+        '<span class="flabel">已注册</span>' +
+        '<div class="chip' + (reg ? ' on' : '') + '" data-reg="' + esc(c.id) + '">' + (reg ? '是' : '否') + '</div>' +
+        '<span class="flabel">今日剩余</span>' +
+        '<input type="text" style="min-width:110px" placeholder="次数 / 魔粒" value="' + esc(q) + '" data-q="' + esc(c.id) + '">' +
+        '<button class="resetc" data-hit="' + esc(c.id) + '">记一次撞墙</button>' +
+        '<div class="chip' + (ex ? ' on' : '') + '" data-ex="' + esc(c.id) + '" title="排除后全站推荐里不再出现它">' +
+          (ex ? '已排除（点击恢复）' : '暂时排除') + '</div>' +
+      '</div>' +
+      ((c.newapi || {}).supported ? '' : '<div class="chainmiss">接不进 New API：' + esc((c.newapi || {}).note || '') + '</div>') +
+      '</div>';
+  }).join('');
+
+  h += '<button class="btn ghost" id="lsdump" style="margin-top:8px">导出记账</button>' +
+       '<button class="btn ghost" id="lswipe" style="margin-left:8px">清空记账</button>';
+
+  const box = $('#exportbox');
+  box.innerHTML = h;
+
+  box.querySelectorAll('[data-reg]').forEach(el => {
+    el.onclick = () => {
+      const id = el.dataset.reg;
+      LS.reg[id] = !isRegistered(id);
+      saveLS(); renderAll();
+    };
+  });
+  box.querySelectorAll('[data-ex]').forEach(el => {
+    el.onclick = () => {
+      const id = el.dataset.ex;
+      if (isExcluded(id)) delete LS.exclude[id]; else LS.exclude[id] = true;
+      saveLS(); renderAll();
+    };
+  });
+  box.querySelectorAll('[data-q]').forEach(el => {
+    el.oninput = () => { LS.quota[el.dataset.q] = el.value; saveLS(); };
+  });
+  box.querySelectorAll('[data-hit]').forEach(el => {
+    el.onclick = () => {
+      LS.hits[el.dataset.hit] = new Date().toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+      saveLS(); renderExport();
+    };
+  });
+  $('#lsdump').onclick = () => {
+    const txt = JSON.stringify(LS, null, 2);
+    const w = window.open('', '_blank');
+    if (w) { w.document.write('<pre>' + esc(txt) + '</pre>'); }
+    else alert(txt);
+  };
+  $('#lswipe').onclick = () => {
+    if (!confirm('清空本地记账（已注册 / 今日剩余 / 撞墙记录 / 排除渠道）？')) return;
+    LS = { reg: {}, quota: {}, hits: {}, exclude: {} }; saveLS(); renderAll();
+  };
+}
+
+/* ---------- 成本估算：这份活儿要切几段、日额度够跑几趟、折合多少轮对话 ---------- */
+let RPT = 5;   // 一轮对话平均触发几次模型调用（AI 编码工具典型 3~5 次，长任务更多）
+
+/* 渠道每日可调用次数：优先取模型层 est_req_per_day 的最大值（Cloudflare 这类按
+   token 折算的渠道只有模型层有数），其次渠道层 daily_cap。都没有就留白，不编。 */
+function chanDailyCalls(c, ms) {
+  const per = ms.map(m => m.est_req_per_day).filter(v => v != null);
+  if (per.length) return { n: Math.max.apply(null, per), from: '模型层折算' };
+  if (c.daily_cap) return { n: c.daily_cap, from: '渠道日额度' };
+  return null;
+}
+
+function renderEstimator() {
+  const box = $('#estbox');
+  if (!box) return;
+  const inC = +($('#est-in') || {}).value || 0;
+  const outC = +($('#est-out') || {}).value || 0;
+  const inTok = Math.round(inC * 1.5), outTok = Math.round(outC * 1.5);
+  if (!inC && !outC) {
+    box.innerHTML = '<p class="hint">填一下字数，这里会按「1 汉字 ≈ 1.5 token」估算每个渠道要切几段、日额度够跑几趟。</p>';
+    return;
+  }
+  let h = '<div class="count">约 <b>' + inTok.toLocaleString('en-US') + '</b> 输入 token + <b>' +
+    outTok.toLocaleString('en-US') + '</b> 输出 token　·　按每轮对话 <b>' + RPT + '</b> 次调用折算</div>';
+  h += '<div class="tblwrap"><table><thead><tr><th>渠道</th><th>能一次装下</th><th>要切几段</th>' +
+    '<th>单次输出够吗</th><th>日额度够跑</th><th>折合对话轮次</th></tr></thead><tbody>';
+  CH.slice().sort((a, b) => a.priority - b.priority).forEach(c => {
+    if (isExcluded(c.id)) return;
+    const ms = MODELS.filter(m => m.channel === c.id && m.is_text !== false);
+    if (!ms.length) return;
+    const maxIn = Math.max.apply(null, ms.map(m => m.ctx_in || 0).concat([0]));
+    const maxOut = Math.max.apply(null, ms.map(m => m.ctx_out || 0).concat([0]));
+    const segs = maxIn ? Math.max(1, Math.ceil(inTok / maxIn)) : 0;
+    const cap = chanDailyCalls(c, ms);
+    const runs = cap && segs ? Math.floor(cap.n / (segs * RPT)) : 0;
+    h += '<tr><td>' + esc(c.name) + '</td>' +
+      '<td>' + (maxIn ? (inTok <= maxIn ? '<span style="color:var(--ok)">能</span>'
+        : '<span style="color:var(--bad)">不能</span>（上限 ' + maxIn.toLocaleString('en-US') + '）') : '未知') + '</td>' +
+      '<td>' + (segs ? segs + ' 段' : '<span style="color:var(--fg3)">输入上限未核实</span>') + '</td>' +
+      '<td>' + (maxOut ? (outTok <= maxOut ? '<span style="color:var(--ok)">够</span>'
+        : '<span style="color:var(--bad)">不够</span>（要分 ' + Math.ceil(outTok / maxOut) + ' 次）') : '未知') + '</td>' +
+      '<td>' + (cap ? (segs ? Math.floor(cap.n / segs) + ' 趟' : '—') +
+        '<div style="font-size:11px;color:var(--fg3)">' + cap.from + '</div>'
+        : '<span style="color:var(--fg3)">额度口径未公布</span>') + '</td>' +
+      '<td>' + (runs ? '<b>' + runs + '</b> 轮' +
+        '<div style="font-size:11px;color:var(--fg3)">' + cap.n + ' 次 ÷（' + segs + ' 段 × ' + RPT + ' 次/轮）</div>'
+        : (cap && segs ? '<span style="color:var(--bad)">不到 1 轮</span>'
+          : '<span style="color:var(--fg3)">—</span>')) + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  h += '<p class="hint">「折合对话轮次」是给你这类 AI 编码客户端准备的：一个问题通常不是一次调用，'
+    + '而是主模型 → 工具执行 → 结果回填 → 再调，长任务还会叠上下文压缩。'
+    + '按 3~5 次/轮估是保守值，写标书这种长任务请按 8 次算。</p>';
+  box.innerHTML = h;
+}
+
+/* ---------- 启动 ---------- */
+/* 顶部横幅「看完整明细」要能跳到巡检更新页，所以切页抽成函数（定义在全局） */
+function showTab(v) {
+  const t = document.querySelector('.tab[data-v="' + v + '"]');
+  if (!t) return;
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('section').forEach(x => x.classList.remove('on'));
+  t.classList.add('on'); $('#v-' + v).classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('.tab').forEach(t => { t.onclick = () => showTab(t.dataset.v); });
+
+$('#pcopy').onclick = copyPrompt;
+
+head(); buildFilters(); render();
+renderChannels(); renderChanges(); renderPromos(); renderVendors(); renderUnverified();
+renderCross(); renderProbe(); renderExport(); renderEstimator();
+renderPrompt(); renderLive(); renderLiveTable();
+
+/* 常用备忘 */
+renderNotes();
+const NT = $('#note-title'), NB = $('#note-body');
+if (NT) NT.onkeydown = e => { if (e.key === 'Enter') $('#note-add').click(); };
+if (NB) NB.onkeydown = e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) $('#note-add').click(); };
+if (NT) $('#note-add').onclick = () => {
+  const title = (NT.value || '').trim(), body = (NB.value || '').trim();
+  if (!title && !body) return;
+  LS.notes.unshift({ id: noteId(), title, body, updated: noteStamp() });
+  saveLS(); NT.value = ''; NB.value = ''; renderNotes(); NT.focus();
+};
+if (NT) $('#note-export').onclick = () => {
+  const list = LS.notes || [];
+  if (!list.length) return;
+  copyText(list.map(n => noteText(n)).join('\n\n' + '─'.repeat(32) + '\n\n'), $('#note-export'));
+};
+if (NT) $('#note-clear').onclick = () => {
+  if (!LS.notes.length) return;
+  if (!confirm('清空全部 ' + LS.notes.length + ' 条备忘？清了就没了，先点「导出全部」备份一下。')) return;
+  LS.notes = []; saveLS(); renderNotes();
+};
+const EI = $('#est-in'), EO = $('#est-out');
+if (EI) EI.oninput = renderEstimator;
+if (EO) EO.oninput = renderEstimator;
+document.querySelectorAll('[data-est]').forEach(el => {
+  el.onclick = () => {
+    if (el.dataset.est === 'tender') { EI.value = 80000; EO.value = 3000; }
+    else { EI.value = 5000; EO.value = 5000; }
+    renderEstimator();
+  };
+});
+document.querySelectorAll('[data-rpt]').forEach(el => {
+  el.onclick = () => {
+    RPT = +el.dataset.rpt || 5;
+    document.querySelectorAll('[data-rpt]').forEach(x => x.classList.toggle('on', x === el));
+    renderEstimator();
+  };
+});
+</script>
+</body>
+</html>

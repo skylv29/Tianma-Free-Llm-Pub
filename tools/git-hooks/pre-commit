@@ -1,0 +1,27 @@
+#!/bin/sh
+# 提交前数据自检：跑 build 的 validate（不写产物）。自检非 0 条即拒绝提交。
+# 基线是 0 告警（2026-09-20 起），所以这里任何告警都当新问题查。
+# 绕过只许用户当面说 --no-verify，AI 会话不许自作主张加。
+#
+# 本文件是**受 git 追踪的副本**（.git/hooks/ 里的同名文件不被追踪，bundle 备份带不走它）。
+# 换机器或从 bundle 恢复后，启用闸门的方式二选一：
+#   git config core.hooksPath tools/git-hooks     # 推荐：直接用这份，以后改它即生效
+#   cp tools/git-hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+# 两条都是仓库本地配置，由用户自己执行。
+cd "$(git rev-parse --show-toplevel)" || exit 1
+python -c "
+import sys
+sys.path.insert(0, 'tools')
+import build
+payload, warns = build.build_payload()
+leak = build.check_secret_leak(payload, '')
+for w in warns[:20]:
+    print('pre-commit 自检: ' + w)
+if len(warns) > 20:
+    print('pre-commit 自检: …另有 %d 条' % (len(warns) - 20))
+for x in leak[:10]:
+    print('pre-commit 自检(疑似 Key): ' + x)
+if warns or leak:
+    sys.exit('提交中止：数据自检 %d 告警 / %d 疑似 Key。修完再提，或确认这是误报。' % (len(warns), len(leak)))
+"
+exit $?

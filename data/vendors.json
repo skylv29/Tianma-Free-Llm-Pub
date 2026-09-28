@@ -1,0 +1,228 @@
+[
+  {
+    "id": "nex-agi", "name": "NEX AGI", "origin": "中国",
+    "intro": "做「视觉驱动的 Agent」。官方自述：模型依靠视觉反馈持续行动与自我修正，操作计算机、浏览器并运行和测试程序。Nex-N2.5 三个尺寸：Mini 35B-A3B（基座 Qwen3.5-35B-A3B-Base）、Pro 397B-A17B（基座 Qwen3.5-397B-A17B）、Max 1.6T-A49B（基座 DeepSeek-V4-Pro-Base）。Mini/Pro 权重已开源。",
+    "benchmark": "官方跑分 Terminal-Bench 2.1 Pro 82.7 / Max 86.1，SWE-Bench Pro Pro 61.2 / Max 65.7（同表 Claude Opus 5 = 79.2 / 89.1）",
+    "free_note": "目前只剩 ModelScope 一档免费（Mini 与 Pro）。OpenRouter 的 `:free` 变体于 2026-09-25 按官方 `expiration_date` 准点下架，09-26 二次复拉清单确认已不在 —— 要白嫖这两档现在只有魔搭一条路，且必须先注册领 Access Token",
+    "verdict": "在库免费里最能打的一个，且基座是 Qwen3.5，中文不吃亏。⚠️ 曾同时挂在 OpenRouter 与魔搭两家，2026-09-26 起只剩魔搭 —— 跨渠道对照页上它不再是「多家」样本"
+  },
+  {
+    "id": "poolside", "name": "Poolside", "origin": "美国",
+    "intro": "专注开放权重的 agentic coding 基础模型，官网愿景原文：the fastest path to AGI runs through software。Laguna 是当前家族：s 2.1 = 118B 总参 / 8B 激活 / 1M 上下文；xs 2.1 = 33B / 3B 激活 / 256K 上下文，主打小到能跑在端上。有独立的 Government 业务线。",
+    "free_note": "OpenRouter 与 Nous 上的 :free 变体",
+    "verdict": "定位极纯粹，只做编码。OpenRouter 免费变体的输出被压到 32K；走 Nous 可到 131K"
+  },
+  {
+    "id": "thinkingmachines", "name": "Thinking Machines Lab", "origin": "美国",
+    "intro": "Mira Murati（前 OpenAI CTO）领衔的实验室。官网自述团队参与过 ChatGPT、Character.ai、Mistral、PyTorch、OpenAI Gym、Fairseq、Segment Anything。定位让 AI 更可理解、更可定制。Inkling = 开源权重多模态 MoE，975B 总参 / 41B 激活。",
+    "free_note": "OpenRouter 上的 inkling 与 inkling-small",
+    "verdict": "免费档里参数最大、规格最豪华，但不是为编码专门调的，适合当复杂任务的兜底"
+  },
+  {
+    "id": "dots-studio", "name": "Dots Studio", "origin": "不明",
+    "intro": "公开信息极少，官网只有一句 From Concept to Creation, We Connect the Dots，模型页 404。仅能从接口描述得知 dots-3-note-preview 是 Dots 3 家族最轻的一档，280B 总参 / 16B 激活 MoE，开源权重。",
+    "free_note": "OpenRouter 上的 dots-3-note-preview:free，原定 2026-09-30 下线、官方 2026-09-23 改口延至 2026-12-31",
+    "verdict": "身份不透明 + 已定下线日期，做长期方案不要依赖它"
+  },
+  {
+    "id": "inclusionai", "name": "InclusionAI（蚂蚁集团）", "origin": "中国",
+    "intro": "蚂蚁集团的开源组织（GitHub 组织简介原文：the series of open-source projects from Ant Group with dedicated efforts to work towards AGI，已验证域名 inclusion-ai.org）。Ling（百灵）系列：Ling 3.0 Flash = 124B 总参 / 5.1B 激活 MoE，主打 token 效率与生产级 agentic 推理；VL 版加原生视觉与视频。同组织还有 Ring、Ming、LLaDA2.X、AWorld。",
+    "free_note": "金融版 -fin、医疗版 -sante 仍有免费变体；通用版 -vl 的 OpenRouter `:free` 已于 2026-09-26 复核时确认从官方清单消失（无到期预告）",
+    "verdict": "蚂蚁出品，中文与工程可靠性都在线。⚠️ 名字相近的三档一定要看清后缀"
+  },
+  {
+    "id": "cohere", "name": "Cohere", "origin": "加拿大",
+    "intro": "加拿大企业级 AI 公司，产品是 North 平台，卖点是私有化部署与安全合规（SOC2 / ISO 27001 / GDPR / CCPA），客户案例 CoreWeave、Fujitsu。",
+    "free_note": "OpenRouter 上的 north-mini-code:free（30B-A3B）",
+    "verdict": "⚠️ OpenRouter 免费模型里唯一开启内容审核的，写安全研究、逆向、爬虫类代码可能被拦"
+  },
+  {
+    "id": "nvidia", "name": "NVIDIA", "origin": "美国",
+    "intro": "Nemotron 是 NVIDIA 自研的开放模型家族（社区 + NVIDIA 共建），面向企业 agentic AI，可用 NIM 微服务私有化部署。NIM 是推理微服务产品线：同一模型既能在 build.nvidia.com 白嫖免费端点，也能下载容器到自己 GPU 或 AWS/Azure/GCP/OCI 上跑，API 完全一致、无需改代码。",
+    "free_note": "build.nvidia.com 标 Free Endpoint 的已收 17 个（2026-09-23 本项目已定补收 8 个徽章级免费：deepseek-v4.1-flash / gpt-oss-20b / mistral-nemotron / nemotron-3-nano-omni-reasoning / ising-calibration-1.5-31b / llama-guard-4-12b / nemotron-3.5-content-safety / riva-translate-4b-instruct-v2；其中后 3 个是安全/量子/翻译垂直模型，不参与通用筛选）。⚠️ 同日巡检改用模型页实体级徽章锚后全清单复扫，另抓到 10 个旧代/垂直条目也挂着 Free Endpoint 徽章（fuyu-8b / sea-lion-7b-instruct / starcoder2-15b / phi-3-vision-128k-instruct / cosmos-reason2-8b / embed-qa-4 / nemotron-4-340b-reward / neva-22b / riva-translate-4b-instruct 旧版 / vila），逐页核实：9 条同页还挂着红色 Deprecated 徽章（fuyu/starcoder2/phi-3-vision 页内写明弃用日期、no longer supported），1 条（cosmos）整页变「unavailable in your location」—— 与 09-20 删 `deepseek-v4-pro-0813` 同一判据，本项目已定按既有口径不收，已登记进 check_live 的 `NVIDIA_BADGE_NOT_COLLECTED` 降噪。旧口径「标 Free Endpoint 的 10 个」里的 `deepseek-v4-pro-0813` 官方已标 Deprecated、2026-09-20 删条目，模型本体仍在，只是不再免费。Zen 上的 nemotron-*-free 走的是 NVIDIA 免费试用端点",
+    "verdict": "规格最好但合规最敏感。⚠️ 试用端点官方明示 Trial use only — do not submit personal or confidential data，公司代码别往上放"
+  },
+  {
+    "id": "cloudflare", "name": "Cloudflare", "origin": "美国",
+    "intro": "美国边缘云厂商（NYSE: NET），Workers AI 是它跑在全球 300+ 数据中心的无服务器 GPU 推理，按 Neurons 计费。全部是开源权重托管（Llama / Qwen / Gemma / Mistral / GLM / Kimi / DeepSeek / gpt-oss）。",
+    "free_note": "10,000 Neurons/天 的免费额度，覆盖除 7 个前沿模型外的全部模型",
+    "verdict": "注册只要邮箱、不要信用卡不要手机号，是零身份门槛渠道之一。⚠️ 但免费是日额度而非模型免费，7 个最强模型要求绑定付费方式。定位是每天一点免费试用量"
+  },
+  {
+    "id": "opencode", "name": "OpenCode / Zen", "origin": "开源",
+    "intro": "OpenCode 是 MIT 开源的编码 agent（TUI / 桌面 / IDE 插件），Zen 是它的官方模型网关。官方自述 Zen 定位：a list of tested and verified models provided by the OpenCode team，即只上架跑编码 agent 效果好的模型，按成本价转售（只收 4.4% + $0.30 手续费）。",
+    "free_note": "官方免费清单现点名 10 个（docs/zen.md 定价表逐行列出，2026-09-26 新增 Space Bunny Free、2026-09-28 新增 LongCat 2.5 Preview Free），本页记 11 条、free_model_count 按含对华口径计 10（拆法见 channels.json 的计数口径段）",
+    "verdict": "⭐ big-pickle 官方原文称为 a stealth model，身份、参数、厂商全部未公开。这是 Zen 免费层里唯一的独家模型"
+  },
+  {
+    "id": "xiaomi", "name": "小米 MiMo", "origin": "中国",
+    "intro": "小米的大模型团队，官网自述 Xiaomi's universal smart platform，覆盖语言、多模态、语音。MiMo-V2.5 主打 agency and multimodality，V2.5-Pro 主打 agentic and long horizon coherence。技术积累扎实（HySparse 混合稀疏注意力、MOPD 多教师同策略蒸馏、UltraSpeed 把 1T 模型推到 1000 TPS）。",
+    "free_note": "Zen 客户端的 mimo-v2.5-free、B.AI 的 mimo-v2.5",
+    "verdict": "免费档里中文 + 全模态的唯一交集，做截图改代码这类活没有替代品"
+  },
+  {
+    "id": "deepseek", "name": "深度求索 DeepSeek", "origin": "中国",
+    "intro": "国产开源推理模型代表。⚠️ 官方 API 文档最新公告：deepseek-v4-flash 与 deepseek-v4-flash-vision-exp 已退役，请求由 DeepSeek-V4.1-Flash 承担并按 Flash 价计费；V4 Pro 在 2026-09-14 之后继续提供服务。官方已提供 Anthropic 兼容端点（api.deepseek.com/anthropic）。",
+    "free_note": "SenseNova 上是商汤托管权重，免费；ModelScope 上也有；DeepSeek 官方渠道是付费的；NVIDIA 的 deepseek-ai/deepseek-v4.1-flash（2026-09-23 补收）",
+    "verdict": "⚠️ 别搞混：官方渠道付费，SenseNova 上免费。看到 -flash 字样的 DeepSeek 先确认版本"
+  },
+  {
+    "id": "zhipu", "name": "智谱 Zhipu / BigModel", "origin": "中国",
+    "intro": "清华系，A 股上市。当前旗舰 GLM-5.3（官方称编程体验提升 50%）、GLM-5.3-Flash（原生多模态，价格仅 Claude Opus 4.8 的 1/40），另有 GLM-Image / GLM-OCR / GLM-ASR / GLM-TTS。有 GLM Coding Plan 订阅制。",
+    "free_note": "SenseNova 上的 glm-5.2、ModelScope 上的 GLM-5.2 / GLM-4.7-Flash、Cloudflare 上的 glm-4.7-flash",
+    "verdict": "⚠️ 免费渠道里能拿到的是上一代（5.2），当前旗舰已是 5.3"
+  },
+  {
+    "id": "moonshot", "name": "月之暗面 Moonshot / Kimi", "origin": "中国",
+    "intro": "以长上下文著称。官方定价页原文：Kimi K3 上下文 1,048,576 tokens，输入 ¥2（缓存命中）/ ¥20（缓存未命中）每百万，输出 ¥100 每百万 —— 属国内旗舰价位。",
+    "free_note": "NVIDIA NIM 上的 moonshotai/kimi-k3（1M / 2.8T）、SenseNova 上的 kimi-k3",
+    "verdict": "能在 SenseNova / NVIDIA 白嫖到 K3 相当划算。长文档、长会话场景的第一选择"
+  },
+  {
+    "id": "qwen", "name": "阿里通义千问 Qwen", "origin": "中国",
+    "intro": "国内开源生态最大的一家。Qwen3.8-Max 2.4T 参数并首次开源 Max 级权重；Qwen3.8-Flash-Next 是 Qwen4 架构预览（混合 Gated DeltaNet + Gated Attention 的多模态 MoE）。",
+    "free_note": "B.AI 的 qwen3.8-flash、ModelScope 的 Qwen 全家桶、Cloudflare 的多个 Qwen 档",
+    "verdict": "B.AI 上的 qwen3.8-flash 是 1M 上下文 + 131K 输出 + 视频图像输入的六边形战士"
+  },
+  {
+    "id": "tencent", "name": "腾讯混元 Hunyuan", "origin": "中国",
+    "intro": "腾讯全链路自研，覆盖文本/图像/视频/语音/3D，已通过算法备案。最新 Hy4 preview（770B 总参 / 49B 激活），最大输入 960K、最大输出 64K，更新于 2026-08-28，官方称重点面向 Agent、Coding 与生产力场景优化。",
+    "free_note": "B.AI 的 hy3（B.AI 已于 2026-09-16 免费档清零后移出本导航）；ModelScope 的 Tencent-Hunyuan/Hy3 已于 2026-09-19 从 API-Inference 下架",
+    "verdict": "⚠️ 免费渠道里的 hy3 是更早一代（295B-A21B），且只吃文本没有视觉"
+  },
+  {
+    "id": "sensetime", "name": "商汤 SenseTime", "origin": "中国",
+    "intro": "中国香港上市的 AI 公司，视觉 AI 起家（官方称中国视觉 AI 市场份额连续 10 年第一，ModelStudio 平台 IDC 份额 11.3%）。SenseNova 是其基础模型系列，含 U1 系列图像生成（U1 Pro 为旗舰）。",
+    "free_note": "公测期 7 个模型全免费 + 双积分池",
+    "verdict": "本清单里唯一把公测期全免费 + 双积分池写成明确规则的，额度也是最大的"
+  },
+  {
+    "id": "agnes", "name": "Agnes AI / Sapiens AI", "origin": "新加坡（中国南京运营）",
+    "intro": "新加坡的 AI 实验室，走全模态自研路线（文本 + 图像 + 视频三条线同时做，都在官方定价页挂 $0 现价）。中国站页脚署名「南京市爱思人工智能科技有限公司」，GitHub 组织 AgnesAI-Labs，Agnes-2.5-Pro-Alpha 权重以 Apache 2.0 开源在 Hugging Face。",
+    "benchmark": "官网自报 Artificial Analysis 智能指数 v4.3 = 35、图改图 Elo 1178、文生视频 Elo 1082。⚠️ 厂商自己的宣传口径，且官方模型文档自注智能指数「当前标注为估算成绩，独立评测仍在进行中」",
+    "free_note": "6 个现价 $0：文本 2 个、图像 3 个、视频 1 个（第 7 个 agnes-video-v2.0 已于 2026-09-28 从定价页 / 模型页 / llms.txt 三处消失，已撤条）",
+    "verdict": "核心卖点是三件事：① 全模态（文/图/视频）都免费 ② 免费档没有日配额 ③ 同时给 OpenAI 与 Anthropic 两套端点。⚠️ 但 /v1/models 要鉴权，无法用接口交叉验证，是唯一单一来源的渠道"
+  },
+  {
+    "id": "modelscope", "name": "魔搭社区 ModelScope", "origin": "中国（阿里巴巴）",
+    "intro": "阿里巴巴的开源模型社区，国内对标 Hugging Face 的平台：托管模型/数据集、创空间、Notebook、MCP 广场、Skills 中心、AIGC 专区。API-Inference 是把社区里的开源模型直接服务化成 OpenAI 兼容 API 的那一层，由阿里云出算力，定性为非商业化、非盈利产品。（区别于商业化付费的阿里云百炼）",
+    "free_note": "35 个免费模型（2026-09-19 实时清单口径，Qwen3 全系与 Hy3 已下架）+ 每日 250 魔粒额度",
+    "verdict": "模型库最大，几乎全是国产/开源权重，中文场景覆盖最全，且提供 Anthropic 兼容端点。⚠️ 但必须绑阿里云账号 + 实名认证，是身份要求最高的渠道"
+  },
+  {
+    "id": "nousresearch", "name": "Nous Research", "origin": "美国",
+    "intro": "美国 AI 研究机构，MIT 开源。三条产品线：Hermes 模型家族、Hermes Agent（开源编码 Agent，支持 CLI/桌面/20+ 消息平台网关，有记忆与自我迭代 Skills 的学习闭环）、Nous Portal（统一推理网关，200+ 模型 + 托管工具）。另有 Psyche 分布式训练网络。",
+    "free_note": "7 个 :free 模型（Free 计划 $0/月，Free models only）",
+    "verdict": "Free 档卡得很清楚：只能调那 7 个。⚠️ 必须注册并订阅（哪怕 Free 计划），未带凭证返回 402 + x402 付款信封而非 401"
+  },
+  {
+    "id": "stepfun", "name": "阶跃星辰 StepFun", "origin": "中国",
+    "intro": "中国 AI 公司，Step 系列原生多模态模型。step-3.7-flash 是它的高效率 MoE：196B 参数语言骨干 + 视觉编码器，约 11B 激活，原生支持图像与视频理解。",
+    "free_note": "Nous Portal 的 step-3.7-flash:free、ModelScope 的 stepfun-ai/Step-3.7-Flash；阶跃自家开放平台另有 4 个 stepaudio-3 preview 音频模型「限时免费」（2026-09-20 作为独立渠道收录）",
+    "verdict": "Nous 7 个免费模型里唯一支持三档思考强度的，也是唯一视频输入的多模态"
+  },
+  {
+    "id": "meituan", "name": "美团 LongCat", "origin": "中国",
+    "intro": "美团的开源大模型系列。longcat-2.0 是 48B 激活 / 1.6T 总参的稀疏 MoE，1M 上下文，官方定位 coding、repository-scale edits、long-horizon problem solving、agentic tool use，推理默认开启。",
+    "free_note": "Nous Portal 的 meituan/longcat-2.0:free；OpenCode Zen 的 longcat-2.5-preview-free（2026-09-28）",
+    "verdict": "Nous 免费档里规格最高的一个（1M/262K，09-26 按官方接口回填）。注意 ModelScope 上的 LongCat-Flash-Lite 是轻量同源产品，不是同一个"
+  },
+  {
+    "id": "upstage", "name": "Upstage", "origin": "韩国",
+    "intro": "韩国 AI 公司，solar-pro4 主打成本效率 + 524K 长上下文，官方描述强调长程任务与 agentic 工作流，办公生产力、文档密集型任务。",
+    "free_note": "Nous Portal 的 upstage/solar-pro4:free",
+    "verdict": "Nous 7 个里上下文第二长（524K），适合文档处理流水线；中英之外的语种也不错"
+  },
+  {
+    "id": "minimax", "name": "MiniMax（稀宇科技）", "origin": "中国",
+    "intro": "上海 AI 公司，长文本是传统强项。",
+    "free_note": "ModelScope 上的 MiniMax-M3 / MiniMax-M1-80k",
+    "verdict": "长文备选。M1-80k 是 80K 上下文的更老批次"
+  },
+  {
+    "id": "meta", "name": "Meta", "origin": "美国",
+    "intro": "Llama 系列开源权重厂商。Muse Spark 是其全模态旗舰线。",
+    "free_note": "Zen 的 muse-spark-*-contributor-free（中国 403）、NVIDIA 的 meta/muse-glimmer-30b、NVIDIA 的 meta/llama-guard-4-12b（安全分类器）",
+    "verdict": "⚠️ Zen 上两款 Muse Spark 对中国返回 403 RegionError，且 Contributor 版以允许 Meta 拿你的提示词训练为代价"
+  },
+  {
+    "id": "google", "name": "Google", "origin": "美国",
+    "intro": "Gemma 系列开放权重模型。",
+    "free_note": "OpenRouter 的 gemma-4-31b-it / gemma-4-26b-a4b-it、NVIDIA 的 gemma-4-31b-it、Cloudflare 的 @cf/google/gemma-4-26b-a4b-it",
+    "verdict": "通用兜底，规格中规中矩"
+  },
+  {
+    "id": "mistral", "name": "Mistral", "origin": "法国",
+    "intro": "欧洲开放权重厂商。",
+    "free_note": "Cloudflare 的 @cf/mistralai/mistral-small-3.1-24b-instruct、ModelScope 的 Mistral-Large-Instruct-2407（旧版）、NVIDIA 的 mistralai/mistral-nemotron",
+    "verdict": "存在感较弱，非首选"
+  },
+  {
+    "id": "baidu", "name": "百度文心", "origin": "中国",
+    "intro": "ERNIE 系列。⚠️ ModelScope 上的 4 个全是 -PT 后缀。",
+    "free_note": "ModelScope 的 ERNIE-4.5 系列 4 个",
+    "verdict": "⚠️ -PT = Pretrained 预训练基座，没做指令微调，直接对话效果会很差，别当 Chat 模型用"
+  },
+  {
+    "id": "shanghai-ai-lab", "name": "上海 AI Lab", "origin": "中国",
+    "intro": "书生 Intern 系列，科学推理方向。",
+    "free_note": "ModelScope 的 Intern-S1 / Intern-S1-mini / Intern-S2-Preview",
+    "verdict": "科学推理垂直向，通用场景不是首选"
+  },
+  {
+    "id": "opengvlab", "name": "OpenGVLab", "origin": "中国",
+    "intro": "InternVL 系列视觉多模态。",
+    "free_note": "ModelScope 的 InternVL3_5-241B-A28B",
+    "verdict": "视觉多模态专精"
+  },
+  {
+    "id": "ibm", "name": "IBM", "origin": "美国",
+    "intro": "Granite 系列企业向开源模型。",
+    "free_note": "Cloudflare 的 @cf/ibm-granite/granite-4.0-h-micro",
+    "verdict": "Cloudflare 免费档里最便宜（约 750 次/天），适合跑量短任务"
+  },
+  {
+    "id": "openai", "name": "OpenAI", "origin": "美国",
+    "intro": "gpt-oss 系列开源权重。",
+    "free_note": "Cloudflare 的 @cf/openai/gpt-oss-20b / gpt-oss-120b、NVIDIA 的 openai/gpt-oss-20b（免费端点，输出上限只有 4K）",
+    "verdict": "OpenAI 开源权重，生产级通用推理，128K 上下文"
+  },
+  {
+    "id": "unknown", "name": "厂商不明", "origin": "不明",
+    "intro": "占位条目：该模型只有命名空间线索、查不到厂商背景，不要当成已知厂商使用。",
+    "free_note": "魔搭 early-access/EA-29B-A4B",
+    "verdict": "⚠️ 来源无法核实（见未证实第 21 条），别拿它做正式选型"
+  },
+  {
+    "id": "xgenerationlab", "name": "XGenerationLab", "origin": "未核实",
+    "intro": "魔搭上的发布组织，出品 XiYanSQL-QwenCoder 系列。本次未核实其公司背景。",
+    "free_note": "魔搭的 XiYanSQL-QwenCoder-32B-2412 / 2504",
+    "verdict": "⚠️ 这两个是 Text-to-SQL 专用模型，名字带 QwenCoder 但不是通用编码模型"
+  },
+  {
+    "id": "opencompass", "name": "OpenCompass", "origin": "未核实",
+    "intro": "评测生态下的发布组织，本次未核实其主体背景。",
+    "free_note": "魔搭的 opencompass/CompassJudger-1-32B-Instruct",
+    "verdict": "评测裁判模型，不是通用对话模型，只适合做打分/评审类任务"
+  },
+  {
+    "id": "medaibase", "name": "MedAIBase", "origin": "未核实",
+    "intro": "医疗方向模型的发布组织，本次未核实其主体背景。",
+    "free_note": "魔搭的 MedAIBase/AntAngelMed",
+    "verdict": "⚠️ 医疗垂直模型，通用场景不要用；且医疗输出需人工复核"
+  },
+  {
+    "id": "musepublic", "name": "MusePublic", "origin": "未核实",
+    "intro": "魔搭上的发布账号，托管了 Qwen-Image-Edit 的镜像条目。本次未核实其与原始模型方的关系。",
+    "free_note": "魔搭的 MusePublic/Qwen-Image-Edit（与 Qwen/Qwen-Image-Edit 同能力）",
+    "verdict": "图像编辑（非 LLM）；同一能力有 Qwen 官方命名空间的条目，优先用那条"
+  },
+  {
+    "id": "bytedance",
+    "name": "字节跳动 Seed",
+    "origin": "中国",
+    "intro": "字节自研模型品牌（Seed 系），经 Trae 国内版客户端提供：Seed-2.1-Pro-0915 / Seed-2.1-Turbo / Seed-Code。官方模型页只列名字，不给上下文/参数等任何数字规格。",
+    "free_note": "Trae 国内版客户端内置（凭赠送积分调用，无 API 端点）",
+    "verdict": "⚠️ 只在 Trae 客户端内可达，无公开 API；规格与能力声明官方全留白，评分也留白 —— 没有可比的前代条目"
+  }
+]

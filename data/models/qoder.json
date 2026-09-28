@@ -1,0 +1,14 @@
+[
+  {
+    "id": "Qwen3.8-Flash", "vendor": "qwen",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text", "image"], "modal_out": ["text"],
+    "reasoning": "toggle", "tools": true, "structured": null,
+    "usage": ["coding", "writing", "multimodal"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "Qoder 客户端内限时免费（0.0× 系数，不消耗 Credits）。官方定位：千问系列兼顾速度与成本的多模态模型，支持代码编写、长文档处理与图像理解，具备工具调用能力",
+    "pitfall": "⚠️ 只能在 Qoder 自家客户端用，无 OpenAI 兼容端点，接不进 New API 与通用工具。上下文规格官方未给，留空不推断（ModelScope 同系列 Qwen3.8 的 262K 只是旁证，别照抄）。⚠️ 活动窗口官方原文「2026 年 9 月 18 日 10:00 至 9 月 30 日 23:59:59」，结束后「按照届时公示的模型系数计费」—— 官方没写恢复成 0.1×，别当成确定值。⚠️ 高峰时段官方明示可能响应变慢",
+    "free_type": "client", "expiry": "2026-09-30",
+    "source_level": "官", "verified_at": "2026-09-21"
+  }
+]

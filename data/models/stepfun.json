@@ -1,0 +1,63 @@
+[
+  {
+    "id": "stepaudio-3-chat-preview", "vendor": "stepfun",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["audio", "text"], "modal_out": ["audio", "text"],
+    "reasoning": null, "tools": true, "structured": null,
+    "usage": ["multimodal", "other"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "走 Chat Completions 接口的语音模型：语音进、语音或文本出，HTTP 请求即可，比 Realtime 好接。官方能力标签列了语音输入、文本对话、上下文理解、工具调用",
+    "pitfall": "⚠️ 与 Realtime 版的分工官方写得很明确：Chat Completions 这条路「需自行维护 messages 列表」，且「如需语音流式输出和全双工交互，请使用 Realtime API」。⚠️ `-preview` 是限免期专用 ID，官方原文「限免到期后该预览版本将下线，并新增正式付费版本」，未给到期日。⚠️ 上下文/输出上限官方未公布，留空不推断",
+    "free_type": "promo", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "stepaudio-3-realtime-preview", "vendor": "stepfun",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["audio"], "modal_out": ["audio"],
+    "reasoning": null, "tools": null, "structured": null,
+    "usage": ["multimodal", "other"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "端到端实时语音对话，官方定位当前旗舰：全双工、边想边说、Voice Agent。ASR 与对话历史都内置，不用自己维护 messages，双向流式延迟最低",
+    "pitfall": "⚠️ 走 Realtime API（WebSocket 长连接），不是 Chat Completions —— 只支持 OpenAI 兼容 HTTP 的客户端多半接不进来。⚠️ `-preview` ID 到期即下线换付费正式版（官方原文），无到期日。⚠️ 上下文上限官方未公布",
+    "free_type": "promo", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "stepaudio-3-gen-preview", "vendor": "stepfun",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text"], "modal_out": ["audio"],
+    "reasoning": "none", "tools": null, "structured": null,
+    "usage": ["other"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "综合音频生成：用自然语言描述角色设定、音色与情绪就能出人声，同时支持音效、环境音、背景音乐与歌声，可把多种声音编排进同一段音频",
+    "pitfall": "⚠️ 不是文本模型，不参与编程/写作类筛选。⚠️ `-preview` ID 到期即下线换付费正式版（官方原文），无到期日。⚠️ 官方只写「限时免费」，未给字符数、时长或并发上限",
+    "free_type": "promo", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "stepaudio-3-music-preview", "vendor": "stepfun",
+    "ctx_in": null, "ctx_out": null,
+    "modal_in": ["text", "audio"], "modal_out": ["audio"],
+    "reasoning": "none", "tools": null, "structured": null,
+    "usage": ["multimodal", "other"],
+    "score_coding": null, "score_zh": null,
+    "specialty": "音乐生成大模型：自然语言、歌词、人声或参考音频进，完整歌曲或配乐出，覆盖灵感描述、整曲生成、智能配乐三类任务",
+    "pitfall": "⚠️ 官方标注协议为「HTTP 异步任务」—— 要提交后轮询取结果，不能当同步接口用。⚠️ 这一档的下线预告与另外三个 preview 措辞不同：官方原文「该预览期结束后服务将停止运行，同时上线收费标准版」，说的是停服务而不是「转付费」，别照抄 chat/gen 页那句。无到期日",
+    "free_type": "promo", "expiry": null,
+    "source_level": "官", "verified_at": "2026-09-21"
+  },
+  {
+    "id": "step-5-preview", "vendor": "stepfun",
+    "ctx_in": 1000000, "ctx_out": 65536,
+    "modal_in": ["text", "image", "video"], "modal_out": ["text"],
+    "reasoning": "effort", "tools": true, "structured": true,
+    "usage": ["coding", "writing"],
+    "score_coding": 5, "score_zh": null,
+    "specialty": "阶跃当前旗舰基模，官方定位「重点覆盖编程与专业知识工作」。规格逐字取自官方模型页：上下文 1M tokens、最大输入 1M、最大输出 64k，输入文本+图片+视频 → 输出文本。功能表列了流式输出、工具调用、JSON Mode 与 JSON Schema、提示缓存；推理强度可调 `low`/`medium`/`high`（Chat Completions 用 `reasoning_effort`，Messages API 用 `output_config.effort`）。图片最多 60 张（JPG/PNG/WebP/静态 GIF，URL 或 Base64），视频 MP4/QuickTime/MKV，URL 方式单个 MP4 <128MB、建议 <5 分钟",
+    "pitfall": "⚠️ 免费只对「已持有 Step Plan 订阅的存量账号」成立，不是自助可得：官方 2026-09-22 起「关闭新增免费体验领取通道，并按日限量开放 Plan 购买名额」（逐字），新用户领不到。⚠️ Base URL 要填 `https://api.stepfun.com/step_plan/v1`（OpenAI 兼容）或 `/step_plan`（Anthropic 兼容，Claude Code 接入走这条）；填成标准 `https://api.stepfun.com/v1` 就是按量付费（官方价：输入未命中缓存 7 元 / 命中 0.35 元 / 输出 20 元 每 1M tokens），会直接扣账户余额。⚠️ Step Plan 是月度 Credit 池、月末清零不结转，体验档含多少 Credit 官方未公布（未证实第 53 条），别按额度数字做规划。⚠️ 联网搜索要单独走 `POST /v1/search`，不支持内置 Web Search 工具（官方 FAQ）。⚠️ 官方只写「1M / 64k」未注明十进制还是 2^20，本条按十进制 1,000,000 / 65,536 填。⚠️ `expiry` 2026-10-20 由账号侧「约 28 天剩余」推算而来，官方从未公布该日期（未证实第 62 条）——到期或官方提前撤权益，此条即失效",
+    "free_type": "trial", "expiry": "2026-10-20",
+    "source_level": "官", "verified_at": "2026-09-22"
+  }
+
+]
