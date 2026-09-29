@@ -160,7 +160,7 @@ DOC_CHECK = {
     },
     "qoder": {
         "page": "https://docs.qoder.com/zh/events/flashoffer.md",
-        "must": ["Qwen3.8-Flash", "0.0", "2026 年 9 月 30 日"],
+        "must": ["Qwen3.8-Flash", "0.0", "10 月 1 日起继续免费"],
         "count": {},
         "note": "Qoder 没有可拉的清单端点，免费只在活动页；活动窗口写在同一页",
     },
@@ -200,8 +200,7 @@ DOC_CHECK = {
     "agnes": {
         "page": "https://wiki.agnes-ai.com/zh-Hans/docs/pricing.md",
         "must": ["agnes-3.0-flash", "agnes-2.5-flash", "agnes-image-2.0-flash",
-                 "agnes-image-2.1-flash", "agnes-image-2.5-flash", "agnes-video-v2.0",
-                 "agnes-video-2.5-flash"],
+                 "agnes-image-2.1-flash", "agnes-image-2.5-flash", "agnes-video-2.5-flash"],
         "count": {},
         "note": "Agnes 的清单端点官方从没承诺可匿名（约 8% 请求随机放行），定价页是这 7 条的稳定来源",
     },

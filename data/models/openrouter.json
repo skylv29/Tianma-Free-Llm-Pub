@@ -120,18 +120,6 @@
     "source_level": "实", "verified_at": "2026-09-21"
   },
   {
-    "id": "inclusionai/ling-3.0-flash-fin:free", "vendor": "inclusionai",
-    "ctx_in": 262144, "ctx_out": 32768,
-    "modal_in": ["text"], "modal_out": ["text"],
-    "reasoning": "toggle", "tools": null, "structured": null,
-    "usage": ["writing"],
-    "score_coding": null, "score_zh": 1,
-    "specialty": "⚠️ 金融垂直版（蚂蚁 InclusionAI）。写财经/投研类内容反而最合适",
-    "pitfall": "通用写作与编码请跳过。走 Nous 端点输出上限是 235,929",
-    "free_type": "variant", "expiry": null,
-    "source_level": "实", "verified_at": "2026-09-21"
-  },
-  {
     "id": "inclusionai/ling-3.0-flash-sante:free", "vendor": "inclusionai",
     "ctx_in": 262144, "ctx_out": 32768,
     "modal_in": ["text"], "modal_out": ["text"],

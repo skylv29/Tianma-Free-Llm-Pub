@@ -27,7 +27,7 @@
   {
     "id": "inclusionai", "name": "InclusionAI（蚂蚁集团）", "origin": "中国",
     "intro": "蚂蚁集团的开源组织（GitHub 组织简介原文：the series of open-source projects from Ant Group with dedicated efforts to work towards AGI，已验证域名 inclusion-ai.org）。Ling（百灵）系列：Ling 3.0 Flash = 124B 总参 / 5.1B 激活 MoE，主打 token 效率与生产级 agentic 推理；VL 版加原生视觉与视频。同组织还有 Ring、Ming、LLaDA2.X、AWorld。",
-    "free_note": "金融版 -fin、医疗版 -sante 仍有免费变体；通用版 -vl 的 OpenRouter `:free` 已于 2026-09-26 复核时确认从官方清单消失（无到期预告）",
+    "free_note": "医疗版 -sante 仍有免费变体、Nous 侧的金融版 -fin 也仍在；金融版 -fin 的 OpenRouter `:free` 已于 2026-09-29 消失（清单复拉两次缺席、条目页 endpoints 为 0，无到期预告）；通用版 -vl 的 OpenRouter `:free` 已于 2026-09-26 复核时确认从官方清单消失（无到期预告）",
     "verdict": "蚂蚁出品，中文与工程可靠性都在线。⚠️ 名字相近的三档一定要看清后缀"
   },
   {
@@ -39,7 +39,7 @@
   {
     "id": "nvidia", "name": "NVIDIA", "origin": "美国",
     "intro": "Nemotron 是 NVIDIA 自研的开放模型家族（社区 + NVIDIA 共建），面向企业 agentic AI，可用 NIM 微服务私有化部署。NIM 是推理微服务产品线：同一模型既能在 build.nvidia.com 白嫖免费端点，也能下载容器到自己 GPU 或 AWS/Azure/GCP/OCI 上跑，API 完全一致、无需改代码。",
-    "free_note": "build.nvidia.com 标 Free Endpoint 的已收 17 个（2026-09-23 本项目已定补收 8 个徽章级免费：deepseek-v4.1-flash / gpt-oss-20b / mistral-nemotron / nemotron-3-nano-omni-reasoning / ising-calibration-1.5-31b / llama-guard-4-12b / nemotron-3.5-content-safety / riva-translate-4b-instruct-v2；其中后 3 个是安全/量子/翻译垂直模型，不参与通用筛选）。⚠️ 同日巡检改用模型页实体级徽章锚后全清单复扫，另抓到 10 个旧代/垂直条目也挂着 Free Endpoint 徽章（fuyu-8b / sea-lion-7b-instruct / starcoder2-15b / phi-3-vision-128k-instruct / cosmos-reason2-8b / embed-qa-4 / nemotron-4-340b-reward / neva-22b / riva-translate-4b-instruct 旧版 / vila），逐页核实：9 条同页还挂着红色 Deprecated 徽章（fuyu/starcoder2/phi-3-vision 页内写明弃用日期、no longer supported），1 条（cosmos）整页变「unavailable in your location」—— 与 09-20 删 `deepseek-v4-pro-0813` 同一判据，本项目已定按既有口径不收，已登记进 check_live 的 `NVIDIA_BADGE_NOT_COLLECTED` 降噪。旧口径「标 Free Endpoint 的 10 个」里的 `deepseek-v4-pro-0813` 官方已标 Deprecated、2026-09-20 删条目，模型本体仍在，只是不再免费。Zen 上的 nemotron-*-free 走的是 NVIDIA 免费试用端点",
+    "free_note": "build.nvidia.com 标 Free Endpoint 的已收 16 个（2026-09-29 撤 mistral-nemotron —— 接口 410 EOL、09-28 起不可用，模型页徽章未更新；2026-09-23 本项目已定补收 8 个徽章级免费：deepseek-v4.1-flash / gpt-oss-20b / mistral-nemotron / nemotron-3-nano-omni-reasoning / ising-calibration-1.5-31b / llama-guard-4-12b / nemotron-3.5-content-safety / riva-translate-4b-instruct-v2；其中后 3 个是安全/量子/翻译垂直模型，不参与通用筛选）。⚠️ 同日巡检改用模型页实体级徽章锚后全清单复扫，另抓到 10 个旧代/垂直条目也挂着 Free Endpoint 徽章（fuyu-8b / sea-lion-7b-instruct / starcoder2-15b / phi-3-vision-128k-instruct / cosmos-reason2-8b / embed-qa-4 / nemotron-4-340b-reward / neva-22b / riva-translate-4b-instruct 旧版 / vila），逐页核实：9 条同页还挂着红色 Deprecated 徽章（fuyu/starcoder2/phi-3-vision 页内写明弃用日期、no longer supported），1 条（cosmos）整页变「unavailable in your location」—— 与 09-20 删 `deepseek-v4-pro-0813` 同一判据，本项目已定按既有口径不收，已登记进 check_live 的 `NVIDIA_BADGE_NOT_COLLECTED` 降噪。旧口径「标 Free Endpoint 的 10 个」里的 `deepseek-v4-pro-0813` 官方已标 Deprecated、2026-09-20 删条目，模型本体仍在，只是不再免费。Zen 上的 nemotron-*-free 走的是 NVIDIA 免费试用端点",
     "verdict": "规格最好但合规最敏感。⚠️ 试用端点官方明示 Trial use only — do not submit personal or confidential data，公司代码别往上放"
   },
   {
@@ -124,7 +124,7 @@
   {
     "id": "meituan", "name": "美团 LongCat", "origin": "中国",
     "intro": "美团的开源大模型系列。longcat-2.0 是 48B 激活 / 1.6T 总参的稀疏 MoE，1M 上下文，官方定位 coding、repository-scale edits、long-horizon problem solving、agentic tool use，推理默认开启。",
-    "free_note": "Nous Portal 的 meituan/longcat-2.0:free；OpenCode Zen 的 longcat-2.5-preview-free（2026-09-28）",
+    "free_note": "Nous Portal 的 meituan/longcat-2.0:free 与 longcat-2.5-preview:free（2026-09-29 新上架收条）；OpenCode Zen 的 longcat-2.5-preview-free（2026-09-28）",
     "verdict": "Nous 免费档里规格最高的一个（1M/262K，09-26 按官方接口回填）。注意 ModelScope 上的 LongCat-Flash-Lite 是轻量同源产品，不是同一个"
   },
   {
@@ -154,7 +154,7 @@
   {
     "id": "mistral", "name": "Mistral", "origin": "法国",
     "intro": "欧洲开放权重厂商。",
-    "free_note": "Cloudflare 的 @cf/mistralai/mistral-small-3.1-24b-instruct、ModelScope 的 Mistral-Large-Instruct-2407（旧版）、NVIDIA 的 mistralai/mistral-nemotron",
+    "free_note": "Cloudflare 的 @cf/mistralai/mistral-small-3.1-24b-instruct、ModelScope 的 Mistral-Large-Instruct-2407（旧版）；NVIDIA 的 mistralai/mistral-nemotron 已于 2026-09-28 EOL（09-29 接口实测 410 Gone 后撤条，模型页徽章未更新）",
     "verdict": "存在感较弱，非首选"
   },
   {
